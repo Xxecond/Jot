@@ -10,7 +10,7 @@ export default function Header() {
   const { folders } = useFolders();
 
   const headings = {
-    "/home": "JotFul",
+    "/home": "APP - NAME",
     "/create": "New Jot",
     "/edit": "Edit Jot",
     "/settings": "Settings",
