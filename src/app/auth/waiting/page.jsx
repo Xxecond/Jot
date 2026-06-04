@@ -1,92 +1,95 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 
-function WaitingAuthContent() {
-  const [sessionId, setSessionId] = useState("");
-  const [status, setStatus] = useState("waiting");
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import useSessionPolling from "@/features/auth/hooks/useSessionPolling"; // ← Use the fixed hook
+
+export default function WaitingAuth() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [sessionId, setSessionId] = useState(null);
+  const [status, setStatus] = useState("waiting"); // waiting | authenticated | denied
 
+  // Get sessionId from URL
   useEffect(() => {
-    // Get sessionId from URL params
-    const id = searchParams.get('sessionId');
-    if (!id) {
-      // Generate new sessionId if not provided
-      const newId = Math.random().toString(36).substring(7);
-      setSessionId(newId);
-    } else {
+    const id = searchParams.get("sessionId");
+    if (id) {
       setSessionId(id);
+    } else {
+      // Fallback (should not happen in normal flow)
+      console.warn("No sessionId in URL");
+      router.push("/auth/login");
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
-  useEffect(() => {
-    if (!sessionId) return;
-    
-    // Start polling for auth status
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch(`/api/auth/check-session?sessionId=${sessionId}`);
-        const data = await res.json();
-        
-        if (data.authenticated) {
-          setStatus("authenticated");
-          clearInterval(interval);
-          
-          // Store token and user in localStorage
-          if (data.token) {
-            localStorage.setItem("token", data.token);
-          }
-          if (data.user) {
-            localStorage.setItem("user", JSON.stringify(data.user));
-          }
-          
-          router.push("/home");
-        } else if (data.denied) {
-          setStatus("denied");
-          clearInterval(interval);
-          alert("Login request was denied.");
-        }
-      } catch (err) {
-        console.error("Polling error:", err);
-      }
-    }, 2000); // Check every 2 seconds
+  // Success handler
+  const handleSuccess = () => {
+    setStatus("authenticated");
+    // Force refresh so middleware + AuthContext see the new cookie
+    router.refresh();
+    setTimeout(() => {
+      router.push("/dashboard/home");
+    }, 500);
+  };
 
-    return () => clearInterval(interval);
-  }, [router, sessionId]);
+  const handleDenied = () => {
+    setStatus("denied");
+    alert("Login request was denied.");
+    router.push("/auth/login");
+  };
+
+  // Use the shared polling hook
+  useSessionPolling({
+    sessionId,
+    polling: !!sessionId && status === "waiting",
+    onSuccess: handleSuccess,
+    onDenied: handleDenied,
+    redirectTo: "/dashboard/home",
+  });
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center">
-        <h1 className="text-2xl mb-4"> Click "Yes, it's me" in email to verify.</h1>
-        <p className="text-gray-600 mb-6">
-         
-        </p>
-        
-        <div className="mb-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-        </div>
-        
-        <p className="text-sm text-gray-500">
-        </p>
-        <p className="text-xs text-gray-400 mt-2">
-          This page will automatically redirect when you authenticate
-        </p>
+      <div className="bg-white p-8 rounded-xl shadow-md text-center max-w-md w-full">
+        {status === "waiting" && (
+          <>
+            <h1 className="text-2xl font-semibold mb-4">
+              Waiting for verification
+            </h1>
+            <p className="text-gray-600 mb-8">
+              Click <strong>"Yes, it's me"</strong> in the email we sent you.
+            </p>
+
+            <div className="mb-6">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"></div>
+            </div>
+
+            <p className="text-sm text-gray-500">
+              This page will automatically redirect once verified.
+            </p>
+            <p className="text-xs text-gray-400 mt-4">
+              Expires in 15 minutes • Check your spam folder if needed
+            </p>
+          </>
+        )}
+
+        {status === "authenticated" && (
+          <div className="py-8">
+            <h2 className="text-2xl text-green-600 font-semibold mb-2">
+              ✅ Success!
+            </h2>
+            <p>Redirecting to dashboard...</p>
+          </div>
+        )}
+
+        {status === "denied" && (
+          <div className="py-8">
+            <h2 className="text-2xl text-red-600 font-semibold mb-2">
+              ❌ Request Denied
+            </h2>
+            <p>You can close this tab.</p>
+          </div>
+        )}
       </div>
     </div>
-  );
-}
-
-export default function WaitingAuth() {
-  return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-        </div>
-      </div>
-    }>
-      <WaitingAuthContent />
-    </Suspense>
   );
 }

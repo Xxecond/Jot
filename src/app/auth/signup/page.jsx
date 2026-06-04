@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import {SignupForm} from "@/components/forms";
+import {SignupForm} from "@/features/auth/components";
 import {FcGoogle} from "react-icons/fc" 
 import { FaApple} from "react-icons/fa"; 
 import { FaXTwitter } from "react-icons/fa6";

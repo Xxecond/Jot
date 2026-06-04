@@ -10,19 +10,17 @@ export default function Header() {
   const { folders } = useFolders();
 
   const headings = {
-    "/home": "APP - NAME",
-    "/create": "New Jot",
-    "/edit": "Edit Jot",
-    "/settings": "Settings",
-    "/favorites": "Favorites",
-    "/folder": "Folders",
+    "/dashboard/home": "APP - NAME",
+    "/dashboard/create": "New Jot",
+    "/dashboard/settings": "Settings",
+    "/dashboard/favorites": "Favorites",
   };
 
   const getPageName = (path) => {
     if (headings[path]) return headings[path];
-    if (path.startsWith('/edit') || path.includes('/edit/')) return 'Edit Jot';
-    if (path.startsWith('/folder/')) {
-      const id = path.split('/folder/')[1];
+    if (path.startsWith('/dashboard/edit') || path.includes('/edit/')) return 'Edit Jot';
+    if (path.startsWith('/dashboard/folder/')) {
+      const id = path.split('/dashboard/folder/')[1];
       const folder = folders.find(f => f.id === id);
       return folder ? folder.name : 'Folder';
     }
@@ -32,7 +30,7 @@ export default function Header() {
   const pageName = getPageName(pathname);
 
   return (
-    <header className="sticky top-0 w-full bg-cyan-600 dark:bg-cyan-950 text-white dark:text-cyan-50 py-3 xl:py-4 z-50">
+    <header className="fixed top-0 w-full bg-cyan-600 dark:bg-cyan-950 text-white dark:text-cyan-50 py-3 xl:py-4 z-50">
       {/* Mobile Layout */}
       <div className="md:hidden absolute top-0 -left-4">
         <Navbar first="icon" />

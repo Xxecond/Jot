@@ -1,4 +1,3 @@
-// models/User.js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -10,45 +9,50 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    // Removed password since we're pure magic link now
-    // password: { type: String },  // commented out – no need
+
+    name: {
+      type: String,
+      default: null,
+    },
 
     isVerified: {
       type: Boolean,
       default: false,
     },
 
-    lastEmailSent: {
-      type: Number,
-    },
-
-    // New fields for magic link
-    magicToken: {
-      type: String,
-    },
-    magicTokenExpiry: {
-      type: Number,  // timestamp in ms
-    },
-
-    // Old verification fields – can delete later but keep for now if you want
-    verificationToken: String,
-    verificationTokenExpiry: Date,
-
-    // Optional reset fields – keep if you ever add password later
-    resetToken: String,
-    tokenExpiry: Date,
-
-    // OAuth fields
     provider: {
       type: String,
-      enum: ['google', 'twitter', 'apple'],
+      enum: ["google", "twitter", "apple", "magic"],
+      default: "magic",
     },
+
     providerId: String,
-    name: String,
+
+    // ✅ Magic Link Authentication Fields
+    magicToken: {
+      type: String,
+      default: null,
+      sparse: true, // Allows multiple null values (for unique index)
+    },
+
+    magicTokenExpiry: {
+      type: Date,
+      default: null,
+    },
+
+    lastEmailSent: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+// ✅ Create index for efficient magic token lookups
+userSchema.index({ magicToken: 1, magicTokenExpiry: 1 });
+
+const User =
+  mongoose.models.User ||
+  mongoose.model("User", userSchema);
 
 export default User;

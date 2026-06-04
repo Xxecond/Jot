@@ -1,138 +1,81 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Header from "@/components/Header";
-import { updatePost, getPostById } from "@/lib/postService";
-import { Spinner, SkeletonLoader, Button } from "@/components/ui";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useGuest } from "@/contexts/GuestContext";
 
-export default function EditBlog({ params }) {
+import { Button, Spinner, ProgressBar } from "@/components/ui";
+import Image from "next/image";
+import usePostForm from "@/features/posts/hooks/usePostForm";
+import useImageUpload from "@/features/posts/hooks/useImageUpload";
+import useEditPost from "@/features/posts/hooks/useEditPost";
+import Header from "@/components/Header";
+import SkeletonLoader from "@/components/ui/SkeletonLoader";
+
+export default function EditJot() {
+  const { id } = useParams();
   const router = useRouter();
-  const postId = React.use(params).id;
+
   const { settings } = useSettings();
   const { addNotification } = useNotifications();
-  const { isGuest, getGuestPost, updateGuestPost } = useGuest();
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [fetchingPost, setFetchingPost] = useState(true);
-  const [dragActive, setDragActive] = useState(false);
+  const { post, loading, updating, update } = useEditPost(id);
 
-  // Fetch existing post
+  const { title, content, setTitle, setContent } = usePostForm(
+    settings.autoSave,
+  );
+
+  const {
+    setSelectedFile,
+    selectedFile,
+    setImagePreview,
+    imagePreview,
+    selectImage,
+    dragActive,
+    removeImage,
+    handleDrag,
+    handleDrop,
+  } = useImageUpload();
+
+  // hydrate form when post loads
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        if (isGuest) {
-          const post = getGuestPost(postId);
-          if (post) { setTitle(post.title); setContent(post.content); setImagePreview(post.image || null); }
-        } else {
-          const post = await getPostById(postId);
-          setTitle(post.title);
-          setContent(post.content);
-          setImagePreview(post.image || null);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setFetchingPost(false);
-      }
-    };
-    fetchPost();
-  }, [postId, isGuest]);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setSelectedFile(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    const files = e.dataTransfer.files;
-    if (files && files[0]) {
-      const file = files[0];
-      if (file.type.startsWith('image/')) {
-        setSelectedFile(file);
-        setImagePreview(URL.createObjectURL(file));
+    if (post) {
+      setTitle(post.title);
+      setContent(post.content);
+      // hydrate image preview when editing an existing post
+      if (post.image) {
+        setImagePreview(post.image);
+        setSelectedFile(null);
       }
     }
-  };
+  }, [post]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
-      if (isGuest) {
-        const imageUrl = selectedFile ? URL.createObjectURL(selectedFile) : imagePreview;
-        updateGuestPost(postId, { title, content, image: imageUrl });
-        router.push('/home');
-        return;
-      }
-
-      let imageUrl = imagePreview;
-
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append("quality", settings.imageQuality);
-
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!uploadRes.ok) {
-          const error = await uploadRes.json();
-          throw new Error(error.error || "Upload failed");
-        }
-
-        const uploadData = await uploadRes.json();
-        if (!uploadData.url) throw new Error("Upload failed - no URL returned");
-
-        imageUrl = uploadData.url;
-      }
-
-      await updatePost(postId, {
+      await update({
         title,
         content,
-        image: imageUrl,
       });
 
-      router.push("/home");
+      router.push("/dashboard/home");
     } catch (err) {
-      addNotification(`Error: ${err.message}`, "error");
-      console.error(err);
-    } finally {
-      setLoading(false);
+      addNotification(err.message, "error");
     }
   };
 
-  if (fetchingPost) {
+  if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
+      <div className="">
         <Header />
+        {loading && (
+          <div className="fixed top-0  min-h-screen flex justify-center items-center bg-red-900 left-0 w-full z-10">
+            <ProgressBar height="h-2" className="w-2/3" />
+          </div>
+        )}
         <div className="flex justify-center items-center h-screen w-full">
           <SkeletonLoader />
         </div>
@@ -141,100 +84,102 @@ export default function EditBlog({ params }) {
   }
 
   return (
-    <>
-      <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
-        <Header />
-        <section className="flex flex-1 items-center justify-center bg-white dark:bg-black/90 ">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] max-w-4xl"
-          >
+    <div>
+      <section className="flex justify-center items-center">
+    <form
+          onSubmit={handleSubmit}
+          className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255, 255, 255, 0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] "
+        >
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+            className="w-full px-3 py-1 md:p-2 xl:p-3 mb-5 focus:outline-none ring ring-black dark:ring-white focus:ring-2 dark:bg-white/20 bg-black/20 rounded-lg outline-none placeholder:text-white/50"
+            required
+          />
+
+          <label className="inline-block w-auto max-w-max ring dark:ring-white ring-black px-2 rounded-lg mb-4 text-sm xl:text-base">
+            Choose Image
             <input
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              className="text-base w-full px-3 py-1 md:p-2 xl:p-3 mb-5 focus:outline-none ring-1 ring-black dark:ring-white focus:ring-2 dark:bg-white/20 bg-black/20 rounded-lg outline-none placeholder:text-white/50"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setSelectedFile(file);
+                setImagePreview(URL.createObjectURL(file));
+              }}
             />
+          </label>
 
-            <label
-              className="inline-block w-auto max-w-max ring dark:ring-white ring-black px-2  rounded-lg mb-4 text-sm xl:text-base"
+          {!imagePreview && (
+            <div
+              className={`w-full h-62 border-2 border-dashed rounded-lg mb-4 flex items-center justify-center cursor-pointer transition-colors ${
+                dragActive
+                  ? "border-cyan-500 dark:border-cyan-900 bg-cyan-50 dark:bg-black/90"
+                  : "border-black dark:border-white bg-cyan-50 dark:bg-black/90"
+              }`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
             >
-              Choose Image
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-            </label>
+              <p className="text-gray-600 text-center dark:text-gray-100">
+                {dragActive ? (
+                  "Drop image here"
+                ) : (
+                  <>
+                    <span className="md:hidden">Tap to select image</span>
+                    <span className="hidden md:inline">
+                      Drag image here to upload
+                    </span>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
 
-            {/* Drag and Drop Box - only show when no image is selected */}
-            {!imagePreview && (
+          {imagePreview && (
+            <div className="mb-4 xl-text-lg text-center">
               <div
-                className={`w-full h-62 border-2 border-dashed rounded-lg mb-4 flex items-center justify-center cursor-pointer transition-colors ${
-                  dragActive 
-                    ? 'border-cyan-500 dark:border-cyan-900 bg-cyan-50 dark:bg-cyan-800' 
-                    : 'border-black dark:border-white bg-gray-50 dark:bg-black/90'
-                }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-                onClick={() => document.querySelector('input[type="file"]').click()}
+                className="relative w-[95%] max-w-4xl mx-auto mb-3 overflow-hidden rounded-lg"
+                style={{ aspectRatio: "16/9" }}
               >
-                <p className="text-gray-600 text-center dark:text-gray-100">
-                  {dragActive ? 'Drop image here' : <><span className="md:hidden">Tap to select image</span><span className="hidden md:inline">Drag image here to upload</span></>}
-                </p>
+                <Image
+                  src={imagePreview}
+                  alt="preview"
+                  fill
+                  className="object-contain"
+                />
               </div>
-            )}
-            
-            {imagePreview && (
-              <div className="mb-4 text-base xl:text-lg text-center">
-                <div className="relative w-[95%] max-w-4xl mx-auto mb-3 overflow-hidden rounded-lg" style={{ aspectRatio: '16/9' }}>
-                  <Image
-                    src={imagePreview}
-                    alt="Preview"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  className="bg-red-700"
-                  onClick={() => {
-                    setImagePreview(null);
-                    setSelectedFile(null);
-                  }}
-                >
-                  Remove Image
-                </Button>
-              </div>
-            )}
+              <Button
+                type="button"
+                variant="destructive"
+                className="bg-red-700 dark:bg-red-850"
+                onClick={() => {
+                  setImagePreview(null);
+                  setSelectedFile(null);
+                }}
+              >
+                Remove Image
+              </Button>
+            </div>
+          )}
 
-            <textarea
-              placeholder="Write your content here..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-              rows="5"
-              className="text-base w-full px-3 py-1 md:p-2 xl:p-3 mb-5 focus:outline-none ring-1 ring-black dark:ring-white focus:ring-2 dark:bg-white/20 bg-black/20 rounded-lg outline-none placeholder:text-white/50"
-            ></textarea>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="write your content here...."
+            rows="5"
+            className="w-full px-3 py-1 md:p-2 xl:p-3 mb-5 focus:outline-none ring ring-black dark:ring-white focus:ring-2 dark:bg-white/20 bg-black/20 rounded-lg outline-none placeholder:text-white/50"
+            required
+          />
 
-            <Button type="submit" disabled={loading} variant="special" className="w-full">
-              {loading ? (
-                <span className="flex items-center justify-center gap-3">
-                  Updating... <Spinner size="sm" />
-                </span>
-              ) : (
-                <>Update Jot</>
-              )}
-            </Button>
-          </form>
-        </section>
-      </div>
-    </>
+          <Button type="submit" disabled={loading || updating} variant="special" className="w-full">
+            {loading ? <Spinner size="sm" /> : "Add Jot"}
+          </Button>
+        </form>
+      </section>
+    </div>
   );
 }

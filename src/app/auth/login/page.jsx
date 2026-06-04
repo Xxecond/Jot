@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { LoginForm } from "@/components/forms";
+import { LoginForm } from "@/features/auth/components";
 import {FcGoogle} from "react-icons/fc" 
 //import { FaApple} from "react-icons/fa"
 import { FaXTwitter } from "react-icons/fa6"

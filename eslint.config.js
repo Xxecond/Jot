@@ -23,6 +23,7 @@ export default [
     env: { node: true },
     languageOptions: {
       globals: {
+        ...globals.node,
         process: 'readonly',
         Buffer: 'readonly',
         console: 'readonly',
@@ -39,19 +40,9 @@ export default [
     env: { browser: true },
     languageOptions: {
       globals: {
+        ...globals.browser,
         window: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        fetch: 'readonly',
-        FormData: 'readonly',
-        File: 'readonly',
-        alert: 'readonly',
-        confirm: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        URL: 'readonly',
-        Response: 'readonly',
-        console: 'readonly',
+        document: 'readonly',
       },
     },
   },

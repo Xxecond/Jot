@@ -55,9 +55,9 @@ export async function POST(req) {
     }
 
     const post = await Post.create({
-      title,
-      content,
-      image,
+      title: body.title,
+      content:body.content,
+      image:body.image,
       userId,
     });
 

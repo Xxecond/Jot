@@ -1,79 +1,66 @@
-'use client'
+"use client";
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext({
-  user: null,
-  loading: true,
-  sendMagicLink: async () => {},
-  logout: () => {},
-  isLoggedIn: false,
-})
+import { getMe, logoutUser } from "@/features/auth/services/authService";
+
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Load user from storage on mount
+  // load user on refresh
   useEffect(() => {
-    const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user')
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+    initAuth();
+  }, []);
 
-    if (storedUser && token && storedUser !== 'undefined') {
-      try {
-        setUser(JSON.parse(storedUser))
-      } catch (e) {
-        // Bad data – clear it
-        localStorage.removeItem('user')
-        localStorage.removeItem('token')
-        sessionStorage.removeItem('user')
-        sessionStorage.removeItem('token')
-      }
-    }
-    setLoading(false)
-  }, [])
-
-  // Send magic link (signup or login – same thing)
-  const sendMagicLink = async (email) => {
-    setLoading(true)
+  const initAuth = async () => {
     try {
-      const res = await fetch('/api/auth/magic-link', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to send link')
-      return data
+      setError(null);
+      const userData = await getMe();
+      setUser(userData);
+      console.log("✅ User authenticated:", userData.email);
+    } catch (err) {
+      // 401 is expected when no token exists - this is NOT an error
+      if (err.response?.status === 401) {
+        console.log("ℹ️ No active session - user not logged in");
+        setUser(null);
+      } else {
+        console.error("❌ Auth check failed:", err.message);
+        setError(err.message);
+        setUser(null);
+      }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  // Logout
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    sessionStorage.removeItem('token')
-    sessionStorage.removeItem('user')
-    sessionStorage.removeItem('jotful-guest')
-    sessionStorage.removeItem('jotful-guest-posts')
-  }
+  const logout = async () => {
+    try {
+      await logoutUser();
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         loading,
-        sendMagicLink,
+        error,
         logout,
+        refreshUser: initAuth,
         isLoggedIn: !!user,
       }}
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);
