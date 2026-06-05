@@ -50,24 +50,14 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="w-1/2 relative md:block hidden mx-10">
-            <Image
-              src="/assets/bok.png"
-              alt="logo-pic"
-              fill
-              className="object-cover"
-            />
+            
           </div>
         </main>
       </section>
       <footer className=" h-50  bg-cyan-700 dark:bg-cyan-950 dark:text-gray-100 text-gray-200">
         <section className="flex pt-5 py-9 gap-8 ">
-          <div className="relative h-20 md:h-30  w-30 ml-6 ">
-            <Image
-              src="/assets/bok.png"
-              alt="logo"
-              fill
-              className="object-cover"
-            />
+          <div className="relative border border-white  h-20 md:h-30  w-30 ml-6 ">
+            
           </div>
           <p className="flex md:items-center items-end mr-3">
             JotFul is a simple space designed to jot thoughts, capture moments

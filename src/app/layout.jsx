@@ -4,8 +4,9 @@ import Providers from "./providers";   // ← Import here
 import { connectDB } from "@/lib/db";
 
 export const metadata = {
-  title: "JotFul",
+  title: "APP-NAME",
   description: "diary app",
+  icon: "/favicon.ico"
 };
 
 export const viewport = {
@@ -14,12 +15,7 @@ export const viewport = {
 };
 
 export default async function RootLayout({ children }) {
-  try {
-    await connectDB();
-  } catch (err) {
-    // connection errors are already handled in connectDB, but ensure layout doesn't crash
-    console.error("Layout DB connect error:", err);
-  }
+  
 
   return (
     <html lang="en">

@@ -25,17 +25,17 @@ export default function SignupForm() {
 
   return (
     <form className="grid gap-4 mt-9" onSubmit={handleSubmit}>
-      <label className="text-sm md:text-base">Email</label>
+      <label className="text-sm font-medium md:text-base">Email</label>
 
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full p-3  focus:outline-none ring-black dark:ring-white focus:ring-2 rounded-full dark:bg-white/10 bg-black/10"
-        placeholder="Enter your email"
+        className="w-full p-3  focus:outline-none ring ring-black dark:ring-white focus:ring-2 rounded-full dark:bg-white/10 bg-black/10"
+        placeholder="mumuniyussif9@gmail.com"
       />
 
-      <div className=" h-20 text-center">
+      <div className=" h-5 text-center">
         {error && <p className=" text-red-500">{error}</p>}
         {message && <p className=" text-green-500">{message}</p>}
       </div>

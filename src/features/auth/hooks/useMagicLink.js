@@ -2,13 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { authSchema } from "@/lib/validations/authSchema";
 import useCountdown from "../hooks/useCountdown";
 import { sendMagicLink } from "@/features/auth/services/authService";
 import { checkSession } from "@/features/auth/services/authService";
 import generateId from "@/lib/generateId";
 
-export default function useMagicLink(action = "login", redirectTo = "/dashboard/home") {
+export default function useMagicLink(
+  action = "login", redirectTo = "/dashboard/home") {
+    
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -21,17 +22,12 @@ export default function useMagicLink(action = "login", redirectTo = "/dashboard/
   const intervalRef = useRef(null);
 
   const handleSubmit = async (e) => {
-    if (e && typeof e.preventDefault === "function") e.preventDefault();
+    e?.preventDefault?.();
 
     setError("");
     setMessage("");
 
-    const result = authSchema.safeParse({ email });
-    if (!result.success) {
-      setError(result.error.errors[0].message);
-      return;
-    }
-
+    
     if (!canResend) {
       setError(`Wait ${countdown}s before resending`);
       return;
@@ -42,14 +38,13 @@ export default function useMagicLink(action = "login", redirectTo = "/dashboard/
     try {
       const newSessionId = generateId();
 
-      const data = await sendMagicLink(email, newSessionId, action);
-
+     await sendMagicLink(email, newSessionId, action);
       // Show immediate instruction and start background polling on this page
-      setMessage("Verify email to confirm");
+      setMessage("Email sent! Check your email.");
       startCountdown();
       setPollingSessionId(newSessionId);
     } catch (err) {
-      setError(err?.message || "Failed to send verification");
+      setError(err?.message || "Failed to send magic link");
     } finally {
       setLoading(false);
     }

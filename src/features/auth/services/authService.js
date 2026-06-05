@@ -4,6 +4,7 @@ import { authSchema } from "@/lib/validations/authSchema";
  * Send magic link for login/signup
  */
 export const sendMagicLink = async (email, sessionId = null, action = "signup") => {
+  try{
   authSchema.parse({ email });
   const { data } = await api.post("/api/auth/magic-link", {
     email,
@@ -12,6 +13,17 @@ export const sendMagicLink = async (email, sessionId = null, action = "signup") 
   });
 
   return data;
+} catch (err){
+  if (err.name === "ZodError") {
+    throw new Error(err.issues[0].message);
+  }
+  const message =
+  err?.response?.data?.error ||
+  err?.response?.data?.message ||
+  err.message ||
+  "Something went wrong";
+  throw new Error(message);
+}
 };
 
 /**
