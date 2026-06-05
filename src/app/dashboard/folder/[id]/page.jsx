@@ -54,7 +54,7 @@ export default function FolderPage() {
   return (
     <div className="min-h-screen">
       {(loading || showRemoteProgress) && (
-        <div className="fixed top-0  min-h-screen flex justify-center items-center bg-red-900 left-0 w-full z-10">
+        <div className="fixed top-0  min-h-screen flex justify-center items-center bg-white dark:bg-black left-0 w-full z-10">
           <ProgressBar height="h-2" className="w-2/3" />
         </div>
       )}
@@ -73,8 +73,9 @@ export default function FolderPage() {
           ))
         ) : (
           <div className="text-center mt-40">
-            <p>No posts in folder</p>
-            <Button>
+            <p className="pb-5">No posts in folder</p>
+            <Button
+            variant="special">
               <Link href="/home">Go Home</Link>
             </Button>
           </div>

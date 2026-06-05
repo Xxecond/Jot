@@ -191,12 +191,12 @@ export default function Navbar({ first, second }) {
                     >
                       {item.text}
                     </button>
-                  ) : item.href === "/home" ? (
+                  ) : item.href === "/dashboard/home" ? (
                     <button
                       onClick={() => {
                         setActiveFolder(null);
                         setOpen(false);
-                        router.push("/home");
+                        router.push("/dashboard/home");
                       }}
                       className={`text-xl w-full text-left hover:text-cyan-500 dark:hover:text-cyan-700 ${textColor} block`}
                     >

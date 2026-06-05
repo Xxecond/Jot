@@ -1,6 +1,6 @@
  function SearchBar({ setSearchTerm }) {
   return (
-    <div className=" flex justify-end mt-5 pr-5">
+    <div className="flex justify-end mt-23 pr-10">
       <input
         type="search"
         placeholder="Search blogs..."

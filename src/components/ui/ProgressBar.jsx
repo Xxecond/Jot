@@ -8,7 +8,7 @@ export default function ProgressBar({
 }) {
   return (
     <div 
-      className={`w-5/6 ${bgColor} rounded-full overflow-hidden ${height} ${className}`}
+      className={`w-2/4 ${bgColor} rounded-full overflow-hidden ${height} ${className}`}
       role="status"
       aria-label="loading"
     >

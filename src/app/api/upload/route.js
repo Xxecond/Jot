@@ -10,10 +10,7 @@ export async function POST(req) {
     const token = req.cookies.get("access_token")?.value;
 
     if (!token) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Verify token
@@ -25,10 +22,7 @@ export async function POST(req) {
     const quality = data.get("quality") || "medium";
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No file uploaded" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
     // Upload (local in dev, cloudinary in prod)
@@ -38,7 +32,7 @@ export async function POST(req) {
   } catch (err) {
     return NextResponse.json(
       { error: err.message || "Upload failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {(loading || showRemoteProgress) && (
-        <div className="fixed top-0  min-h-screen flex justify-center items-center bg-red-900 left-0 w-full z-10">
+        <div className="fixed top-0  min-h-screen flex justify-center items-center bg-white dark:bg-black/90 left-0 w-full z-10">
           <ProgressBar height="h-2" className="w-2/3" />
         </div>
       )}

@@ -11,7 +11,7 @@ import Image from "next/image";
 import usePostForm from "@/features/posts/hooks/usePostForm";
 import useImageUpload from "@/features/posts/hooks/useImageUpload";
 import useCreatePost from "@/features/posts/hooks/useCreatePost";
-import Header from "@/components/Header";
+
 import SkeletonLoader from "@/components/ui/SkeletonLoader";
 
 export default function CreateBlog() {
@@ -25,17 +25,17 @@ export default function CreateBlog() {
     settings.autoSave,
   );
 
-  const {
+  const { 
     setSelectedFile,
     selectedFile,
     setImagePreview,
-    imagePreview,
-    selectImage,
-    dragActive,
-    removeImage,
-    handleDrag,
-    handleDrop,
-  } = useImageUpload();
+     imagePreview,
+      selectImage,
+      dragActive,
+       removeImage,
+      handleDrag,
+      handleDrop } =
+    useImageUpload();
 
   const { loading, submitPost } = useCreatePost({
     settings,
@@ -58,17 +58,9 @@ export default function CreateBlog() {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col">
-        <Header />
-        {loading && (
-          <div className="fixed top-0  min-h-screen flex justify-center items-center bg-red-900 left-0 w-full z-10">
-            <ProgressBar height="h-2" className="w-2/3" />
-          </div>
-        )}
         <div className="flex justify-center items-center h-screen w-full">
           <SkeletonLoader />
         </div>
-      </div>
     );
   }
 
@@ -165,7 +157,13 @@ export default function CreateBlog() {
           />
 
           <Button disabled={loading} variant="special" className="w-full">
-            {loading ? <Spinner size="sm" /> : "Add Jot"}
+               {loading ? (
+              <span className="flex items-center justify-center gap-3">
+                Creating... <Spinner size="sm" />
+              </span>
+            ) : (
+              <>Create Jot</>
+            )}
           </Button>
         </form>
       </section>

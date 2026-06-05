@@ -11,7 +11,6 @@ import Image from "next/image";
 import usePostForm from "@/features/posts/hooks/usePostForm";
 import useImageUpload from "@/features/posts/hooks/useImageUpload";
 import useEditPost from "@/features/posts/hooks/useEditPost";
-import Header from "@/components/Header";
 import SkeletonLoader from "@/components/ui/SkeletonLoader";
 
 export default function EditJot() {
@@ -69,24 +68,16 @@ export default function EditJot() {
 
   if (loading) {
     return (
-      <div className="">
-        <Header />
-        {loading && (
-          <div className="fixed top-0  min-h-screen flex justify-center items-center bg-red-900 left-0 w-full z-10">
-            <ProgressBar height="h-2" className="w-2/3" />
-          </div>
-        )}
         <div className="flex justify-center items-center h-screen w-full">
           <SkeletonLoader />
         </div>
-      </div>
     );
   }
 
   return (
     <div>
       <section className="flex justify-center items-center">
-    <form
+        <form
           onSubmit={handleSubmit}
           className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255, 255, 255, 0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] "
         >
@@ -175,8 +166,19 @@ export default function EditJot() {
             required
           />
 
-          <Button type="submit" disabled={loading || updating} variant="special" className="w-full">
-            {loading ? <Spinner size="sm" /> : "Add Jot"}
+          <Button
+            type="submit"
+            disabled={loading || updating}
+            variant="special"
+            className="w-full"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-3">
+                Updating... <Spinner size="sm" />
+              </span>
+            ) : (
+              <>Update Jot</>
+            )}
           </Button>
         </form>
       </section>

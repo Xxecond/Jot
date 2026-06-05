@@ -3,7 +3,7 @@
 export default function SkeletonLoader({ className = "" }) {
   return (
     <div className={`animate-pulse ${className}`} role="status" aria-label="loading">
-      <div className="mx-auto w-[90%] max-w-4xl bg-gray-200 dark:bg-gray-600/20 rounded-lg p-8">
+      <div className="mx-auto w-[80%] max-w-4xl bg-gray-200 dark:bg-gray-600/20 rounded-lg p-8">
         {/* Title */}
         <div className="h-8 md:h-10 bg-gray-300 dark:bg-gray-500 rounded mb-5 w-2/3" />
 

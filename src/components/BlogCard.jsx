@@ -109,7 +109,7 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
   };
 
   const handleEdit = () => {
-    router.push(`/blog/edit/${blog._id}`);
+    router.push(`/dashboard/edit/${blog._id}`);
   };
 
   const renderContent = (text) => {
@@ -124,7 +124,7 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
   };
 
   return (
-    <div className={`w-[95%] max-w-4xl rounded-lg overflow-hidden mx-auto wrap-break-word whitespace-normal my-12 ${getThemeClass()}`}>
+    <div className={`w-[90%] max-w4xl rounded-lg overflow-hidden mx-auto wrap-break-word whitespace-normal my-12 ${getThemeClass()}`}>
       {/* Title */}
       <div className={`text-center py-1 px-2 relative ${getTitleBgClass()}`}>
         {blog.createdAt && settings.showTimestamps && (

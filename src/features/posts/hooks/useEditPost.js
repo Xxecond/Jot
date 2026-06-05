@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { getPost, updatePost } from "../services/postApi";
 
-
 export default function useEditPost(id) {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -25,7 +24,8 @@ export default function useEditPost(id) {
   const update = async (payload) => {
     // show global progress until dashboard finishes fetching
     try {
-      if (typeof window !== "undefined") sessionStorage.setItem("jotful-progress", "true");
+      if (typeof window !== "undefined")
+        sessionStorage.setItem("jotful-progress", "true");
     } catch {}
 
     setUpdating(true);
