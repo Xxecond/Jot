@@ -4,21 +4,21 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-import {BlogCard, SearchBar } from "@/components";
+import { BlogCard, SearchBar } from "@/components";
 import { Button, ProgressBar } from "@/components/ui";
 
 import { useFolders } from "@/contexts/FolderContext";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useGuest } from "@/contexts/GuestContext";
 
-import {usePosts} from "@/features/posts/hooks/usePosts";
+import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
 
 export default function FolderPage() {
   const { id } = useParams();
   const [showRemoteProgress, setShowRemoteProgress] = useState(false);
 
-  const { folders } = useFolders();
+    const { folders, removePostFromFolder } = useFolders();
   const { settings } = useSettings();
   const { isGuest, guestPosts } = useGuest();
 
@@ -58,7 +58,7 @@ export default function FolderPage() {
           <ProgressBar height="h-2" className="w-2/3" />
         </div>
       )}
-     
+
       <SearchBar />
 
       <section className="p-4">
@@ -67,16 +67,19 @@ export default function FolderPage() {
             <BlogCard
               key={blog._id}
               blog={blog}
-              onDelete={removePost}
               hideAction
+              actionLabel="Remove"
+              variant="warning"
+              onDelete={() => {
+                removePostFromFolder(id, blog._id);
+              }}
             />
           ))
         ) : (
-          <div className="text-center mt-40">
-            <p className="pb-5">No posts in folder</p>
-            <Button
-            variant="special">
-              <Link href="/home">Go Home</Link>
+          <div className="text-center mt-35">
+            <p className="pb-3">No posts in folder</p>
+            <Button variant="special">
+              <Link href="/dashboard/home">Go Home</Link>
             </Button>
           </div>
         )}

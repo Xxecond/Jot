@@ -32,11 +32,12 @@ export default function LoginForm() {
         onChange={(e) => setEmail(e.target.value)}
         className="w-full p-3  focus:outline-none ring ring-black dark:ring-white focus:ring-2 rounded-full dark:bg-white/10 bg-black/10"
         placeholder="mumuniyussif9@gmail.com"
+        required
       />
-      <div className=" h-5 flex  justify-center">
-        {error? (<p className="text-red-500 ">{error}</p>):
-        message?( <p className="text-green-500 ">{message}</p>): null}
-      </div>
+
+        {error? (<p className="text-red-500 text-center ">{error}</p>):
+        message?( <p className="text-green-500 text-center ">{message}</p>): null}
+
 
       <Button type="submit" disabled={loading || !canResend} variant="special">
         {loading ? (

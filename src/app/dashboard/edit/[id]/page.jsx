@@ -6,7 +6,7 @@ import { useSettings } from "@/contexts/SettingsContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useGuest } from "@/contexts/GuestContext";
 
-import { Button, Spinner, ProgressBar } from "@/components/ui";
+import { Button, Spinner } from "@/components/ui";
 import Image from "next/image";
 import usePostForm from "@/features/posts/hooks/usePostForm";
 import useImageUpload from "@/features/posts/hooks/useImageUpload";
@@ -58,6 +58,7 @@ export default function EditJot() {
       await update({
         title,
         content,
+        image: selectedFile || post?.image || null,
       });
 
       router.push("/dashboard/home");
@@ -76,7 +77,7 @@ export default function EditJot() {
 
   return (
     <div>
-      <section className="flex justify-center items-center">
+      <section className="flex justify-center items-center max-w-2xl mx-auto">
         <form
           onSubmit={handleSubmit}
           className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255, 255, 255, 0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] "
@@ -105,7 +106,7 @@ export default function EditJot() {
 
           {!imagePreview && (
             <div
-              className={`w-full h-62 border-2 border-dashed rounded-lg mb-4 flex items-center justify-center cursor-pointer transition-colors ${
+              className={`w-full h-55 border-2 border-dashed rounded-lg mb-4 flex items-center justify-center cursor-pointer transition-colors ${
                 dragActive
                   ? "border-cyan-500 dark:border-cyan-900 bg-cyan-50 dark:bg-black/90"
                   : "border-black dark:border-white bg-cyan-50 dark:bg-black/90"
@@ -168,11 +169,11 @@ export default function EditJot() {
 
           <Button
             type="submit"
-            disabled={loading || updating}
+            disabled={updating}
             variant="special"
             className="w-full"
           >
-            {loading ? (
+            {updating ? (
               <span className="flex items-center justify-center gap-3">
                 Updating... <Spinner size="sm" />
               </span>

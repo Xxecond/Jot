@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPost } from "../services/postApi";
 
-export const usePost = (id) => {
+export const usePost = (id, isGuest, guestPosts) => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -10,15 +10,20 @@ export const usePost = (id) => {
 
     const fetch = async () => {
       try {
-        const data = await getPost(id);
-        setPost(data);
+        if (isGuest) {
+          const found = guestPosts.find(p => p._id === id);
+          setPost(found || null);
+        } else {
+          const data = await getPost(id);
+          setPost(data);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetch();
-  }, [id]);
+  }, [id, isGuest, guestPosts]);
 
   return { post, setPost, loading };
 };

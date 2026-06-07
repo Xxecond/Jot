@@ -49,7 +49,7 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
-          <div className="w-1/2 relative md:block hidden mx-10">
+          <div className="w-1/2 relative md:block hidden mx-10 border border-black">
             
           </div>
         </main>
@@ -60,13 +60,13 @@ export default function LandingPage() {
             
           </div>
           <p className="flex md:items-center items-end mr-3">
-            JotFul is a simple space designed to jot thoughts, capture moments
+            APP-NAME is a simple space designed to jot thoughts, capture moments
             what matters through notes not photos.
           </p>
         </section>
         <div className="border-t bg-cyan-700 dark:bg-cyan-950 border-t-white flex items-center justify-end  border-b-0">
           <span className=" py-4 text-sm font-light pr-5 pt-3">
-            ©{new Date().getFullYear()} Jotful. All rights reserved.
+            ©{new Date().getFullYear()} APP-NAME. All rights reserved.
           </span>
         </div>
       </footer>

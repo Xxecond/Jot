@@ -72,10 +72,14 @@ export const FolderProvider = ({ children }) => {
     return !isFav;
   };
 
+  const removeFavorite = (postId) => {
+    setFavorites((prev) => prev.filter((id) => id !== postId))
+  }
+
   const isFavorite = (postId) => favorites.includes(postId);
 
   return (
-    <FolderContext.Provider value={{ folders, favorites, activeFolder, setActiveFolder, addFolder, addFolderWithPost, addPostToFolder, removePostFromFolder, deleteFolder, toggleFavorite, isFavorite }}>
+    <FolderContext.Provider value={{ folders, favorites, activeFolder, setActiveFolder, addFolder, addFolderWithPost, addPostToFolder, removePostFromFolder, deleteFolder, toggleFavorite, isFavorite, removeFavorite }}>
       {children}
     </FolderContext.Provider>
   );

@@ -4,51 +4,54 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import { BlogCard, SearchBar } from "@/components";
-import { Button, ProgressBar, Modal } from "@/components/ui";
+import { Button, ProgressBar } from "@/components/ui";
 
 import { useFolders } from "@/contexts/FolderContext";
 import { useSettings } from "@/contexts/SettingsContext";
-
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
 
 export default function Favorites() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [modal, setModal] = useState({ open: false });
   const [showRemoteProgress, setShowRemoteProgress] = useState(false);
 
-  const { favorites } = useFolders();
+  const { favorites, removeFavorite } = useFolders();
   const { settings } = useSettings();
 
-  const { posts, loading, removePost } = usePosts();
+  const { posts, loading } = usePosts();
 
+  // progress handling (same pattern you used everywhere)
   useEffect(() => {
     try {
       const flag =
         typeof window !== "undefined" &&
         sessionStorage.getItem("jotful-progress");
+
       if (flag === "true" && loading) {
         setShowRemoteProgress(true);
       }
-    } catch (e) {}
+    } catch {}
 
     if (!loading) {
       try {
-        if (typeof window !== "undefined")
+        if (typeof window !== "undefined") {
           sessionStorage.removeItem("jotful-progress");
+        }
       } catch {}
+
       setShowRemoteProgress(false);
     }
   }, [loading]);
 
+  // filter only favorite posts
   const filtered = usePostFilter(posts, searchTerm, settings).filter((b) =>
     favorites.includes(b._id),
   );
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       {(loading || showRemoteProgress) && (
-        <div className="fixed top-0  min-h-screen flex justify-center items-center bg-white dark:bg-black/90 left-0 w-full z-10">
+        <div className="fixed top-0 min-h-screen flex justify-center items-center bg-white dark:bg-black/90 left-0 w-full z-10">
           <ProgressBar height="h-2" className="w-2/3" />
         </div>
       )}
@@ -61,15 +64,20 @@ export default function Favorites() {
             <BlogCard
               key={blog._id}
               blog={blog}
-              onDelete={removePost}
               hideAction
+              actionLabel="Remove"
+              variant="warning"
+              onDelete={() => {
+                removeFavorite(blog._id)
+              }}
             />
           ))
         ) : (
-          <div className="text-center mt-40">
-            <p>No favorites yet</p>
-            <Button>
-              <Link href="/home">Go Home</Link>
+          <div className="text-center mt-35">
+            <p className="pb-3">No favorites yet</p>
+            <Button
+            variant="special">
+              <Link href="/dashboard/home">Go Home</Link>
             </Button>
           </div>
         )}

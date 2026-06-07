@@ -8,8 +8,8 @@ export default function useCreatePost({
   addGuestPost,
   isGuest,
 }) {
-  const [loading, setLoading] = useState(false);
-
+  const [creating, setCreating] = useState(false);
+  
   const submitPost = async ({
     title,
     content,
@@ -19,12 +19,8 @@ export default function useCreatePost({
   }) => {
     // show global progress until dashboard finishes fetching
     try {
-      if (typeof window !== "undefined") sessionStorage.setItem("jotful-progress", "true");
-    } catch {}
+    setCreating(true);
 
-    setLoading(true);
-
-    try {
       if (isGuest) {
         const imageUrl = selectedFile
           ? URL.createObjectURL(selectedFile)
@@ -40,35 +36,42 @@ export default function useCreatePost({
         return;
       }
 
-      let imageUrl = null;
 
-      if (selectedFile) {
-        imageUrl = await uploadImage(selectedFile);
-      }
+    let imageUrl =null;
 
-      await createPost({
-        title,
-        content,
-        image: imageUrl,
-      });
+    if(selectedFile) {
+      imageUrl = await uploadImage(selectedFile);
+    }
 
-      if (settings.autoSave) {
-        clearDraft();
-      }
+     await createPost({
+      title,
+      content,
+      image: imageUrl,
+    })
 
-      router.push("/dashboard/home");
-    } catch (err) {
-      addNotification(
-        `Error: ${err.message}`,
-        "error"
-      );
-    } finally {
-      setLoading(false);
+    if(settings.autoSave){
+      clearDraft();
+    }
+
+    if(isGuest){
+      addGuestPost(data);
+    } 
+    
+    clearDraft();
+    router.push("/dashboard/home");
+  }
+  catch (err){
+    addNotification(
+      `Error: ${err.message}`,
+      "error"
+    );
+  } finally {
+      setCreating(false);
     }
   };
 
   return {
-    loading,
+    creating,
     submitPost,
   };
 }

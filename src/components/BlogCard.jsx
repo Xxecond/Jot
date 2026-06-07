@@ -10,7 +10,7 @@ import { useGuest } from "@/contexts/GuestContext";
 import Modal from "@/components/Modal";
 import FolderModal from "@/components/FolderModal";
 
-export default function BlogCard({ blog, onDelete, hideAction, change, notification }) {
+export default function BlogCard({ blog, onDelete, hideAction, change, notification, actionLabel, variant }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [folderModal, setFolderModal] = useState(false);
@@ -26,6 +26,7 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
   const { isGuest, exitGuestMode } = useGuest();
   const [guestPrompt, setGuestPrompt] = useState(false);
   const favorite = isFavorite(blog._id);
+
 
   useEffect(() => {
     if (contentRef.current) {
@@ -123,8 +124,17 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
     });
   };
 
+  const  handleDelete = () => {
+  if (onDelete) return onDelete(blog._id);
+};
+
+const variants ={
+    danger: "bg-red-600 dark:bg-red-800",
+    warning: "bg-orange-600"
+  }
+
   return (
-    <div className={`w-[90%] max-w4xl rounded-lg overflow-hidden mx-auto wrap-break-word whitespace-normal my-12 ${getThemeClass()}`}>
+    <div className={`w-[90%] max-w-xl rounded-lg overflow-hidden mx-auto wrap-break-word whitespace-normal my-12 ${getThemeClass()}`}>
       {/* Title */}
       <div className={`text-center py-1 px-2 relative ${getTitleBgClass()}`}>
         {blog.createdAt && settings.showTimestamps && (
@@ -154,7 +164,7 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
 
       {/* Image */}
       {blog.image && settings.showImages && (
-        <div className="relative w-full aspect-[2/3] md:aspect-[3/4] overflow-hidden ">
+        <div className="relative w-full aspect-[4/4] md:aspect-[4/2] overflow-hidden ">
           <Image
             src={blog.image}
             alt={blog.title || "Blog image"}
@@ -254,13 +264,13 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
 }
 
         {!change ? (
-  <button onClick={() => onDelete(blog._id)}  className={`bg-red-600 dark:bg-red-800 text-white px-3 rounded hover:font-bold ${
+  <button onClick={handleDelete}  className={`${variants[variant]} text-white px-3 rounded hover:font-bold ${
             settings.fontSize === 'small' ? 'text-sm md:text-base' :
             settings.fontSize === 'large' ? 'text-lg md:text-xl' :
             'text-base md:text-lg'
           }`}
 >
-    Delete
+    {actionLabel}
   </button>
 ) : (
   <button

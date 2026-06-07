@@ -1,26 +1,35 @@
 import api from "@/lib/api/api";
 
-// GET all posts
+/**
+ * FETCH POSTS (authenticated user)
+ */
 export const getPosts = async () => {
   const res = await api.get("/api/posts");
   return res.data;
 };
 
-// GET single post
+/**
+ * FETCH SINGLE POST
+ */
 export const getPost = async (id) => {
   const res = await api.get(`/api/posts/${id}`);
   return res.data;
 };
 
-// CREATE post
+/**
+ * CREATE POST
+ */
 export const createPost = async (data) => {
   const res = await api.post("/api/posts", data);
   return res.data;
 };
 
-// UPDATE post
+/**
+ * UPDATE POST
+ */
 export const updatePost = async (id, data) => {
   const formData = new FormData();
+
   formData.append("title", data.title);
   formData.append("content", data.content);
 
@@ -41,7 +50,10 @@ export const updatePost = async (id, data) => {
   return res.data;
 };
 
-// DELETE post
+/**
+ * ❌ PERMANENT DELETE (DB)
+ * ONLY use in HOME or admin actions
+ */
 export const deletePost = async (id) => {
   const res = await api.delete(`/api/posts/${id}`);
   return res.data;

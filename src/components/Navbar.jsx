@@ -184,7 +184,7 @@ export default function Navbar({ first, second }) {
                   className="bg-black/70 dark:bg-white/70   rounded-md p-2 transition-all duration-300 hover:pl-5"
                 >
                   {isGuest &&
-                  (item.href === "/favorites" || item.href === "/settings") ? (
+                  (item.href === "/dashboard/favorites" || item.href === "/dashboard/settings") ? (
                     <button
                       onClick={() => setGuestPrompt(true)}
                       className={`text-xl w-full text-left hover:text-cyan-500 dark:hover:text-cyan-700 ${textColor} block`}
@@ -272,7 +272,7 @@ export default function Navbar({ first, second }) {
                   </button>
                 ) : (
                   <Link
-                    href="/settings"
+                    href="/dashboard/settings"
                     onClick={() => setOpen(false)}
                     className={`text-xl w-full hover:text-cyan-500 dark:hover:text-cyan-700 ${textColor}`}
                   >
@@ -305,7 +305,7 @@ export default function Navbar({ first, second }) {
             {user && !isGuest && (
               <div className="mt-auto mb-10 px-5 pt-4">
                 <Link
-                  href="/settings"
+                  href="/dashboard/settings"
                   onClick={() => setOpen(false)}
                   className="flex flex-col items-center gap-2"
                 >
@@ -334,7 +334,7 @@ export default function Navbar({ first, second }) {
                 className="tracking-tight text-white hover:font-semibold xl:text-lg"
               >
                 {isGuest &&
-                (item.href === "/favorites" || item.href === "/settings") ? (
+                (item.href === "/dashboard/favorites" || item.href === "/dashboard/settings") ? (
                   <button
                     onClick={() => setGuestPrompt(true)}
                     className="tracking-tight text-white hover:font-semibold xl:text-lg"
@@ -409,7 +409,7 @@ export default function Navbar({ first, second }) {
               {isGuest ? (
                 <button onClick={() => setGuestPrompt(true)}>Settings</button>
               ) : (
-                <Link href="/settings">Settings</Link>
+                <Link href="/dashboard/settings">Settings</Link>
               )}
             </li>
 

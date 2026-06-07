@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { BlogCard, SearchBar } from "@/components";
-import { ProgressBar, Button, Modal } from "@/components/ui";
+import { ProgressBar, Button } from "@/components/ui";
+import Modal from "@/components/Modal";
 import Link from "next/link";
 
 import { useFolders } from "@/contexts/FolderContext";
@@ -14,6 +15,9 @@ import usePostFilter from "@/features/posts/hooks/usePostFilter";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [actionType, setActionType] = useState(null); // "delete" | "remove"
 
   const { isGuest, guestPosts, hydrated, deleteGuestPost } = useGuest();
   const { settings } = useSettings();
@@ -61,7 +65,17 @@ export default function Home() {
         {filtered.length > 0 ? (
           <>
             {filtered.map((blog) => (
-              <BlogCard key={blog._id} blog={blog} onDelete={removePost} />
+              <BlogCard
+                key={blog._id}
+                blog={blog}
+                actionLabel="Delete"
+                variant ="danger"
+                onDelete={() => {
+                  setSelectedId(blog._id);
+                  setActionType("delete");
+                  setModalOpen(true);
+                }}
+              />
             ))}
 
             <div className="flex justify-center my-8">
@@ -78,6 +92,16 @@ export default function Home() {
           </div>
         )}
       </section>
+            <Modal
+        open={modalOpen}
+        message="Are you sure you want to delete this post?"
+        onCancel={() => setModalOpen(false)}
+        onConfirm={() => {
+          removePost(selectedId);
+          setModalOpen(false);
+        }}
+      />
+
     </div>
   );
 }

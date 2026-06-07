@@ -18,24 +18,29 @@ export async function GET(req) {
 
     if (!token) {
       console.warn("❌ Magic callback - No token provided");
-      return NextResponse.redirect(new URL("/auth/login?error=invalid-token", req.url));
+      return NextResponse.redirect(
+        new URL("/auth/login?error=invalid-token", req.url),
+      );
     }
 
-    console.log("🔍 Magic callback received token:", token.substring(0, 15) + "...");
+    console.log(
+      "🔍 Magic callback received token:",
+      token.substring(0, 15) + "...",
+    );
 
     const user = await User.findOne({
       magicToken: token,
-      magicTokenExpiry: { $gt: Date.now() }
+      magicTokenExpiry: { $gt: Date.now() },
     });
 
     if (!user) {
       console.error("❌ Token not found or expired. Token:", token);
-      
+
       // Debug: Check if token exists at all (expired or invalid)
       const expiredUser = await User.findOne({
         magicToken: token,
       });
-      
+
       if (expiredUser) {
         const expiryTime = expiredUser.magicTokenExpiry;
         console.warn("   → Token expired at:", expiryTime);
@@ -47,8 +52,10 @@ export async function GET(req) {
         const totalUsers = await User.countDocuments();
         console.warn("   → Total users in DB:", totalUsers);
       }
-      
-      return NextResponse.redirect(new URL("/auth/login?error=expired-token", req.url));
+
+      return NextResponse.redirect(
+        new URL("/auth/login?error=expired-token", req.url),
+      );
     }
 
     console.log("✅ Token found for user:", user.email, "| User ID:", user._id);
@@ -64,7 +71,7 @@ export async function GET(req) {
     const jwtToken = jwt.sign(
       { userId: user._id.toString(), email: user.email },
       JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     console.log("🔐 JWT token created for userId:", user._id.toString());
@@ -75,10 +82,11 @@ export async function GET(req) {
         await AuthSession.findOneAndUpdate(
           { sessionId },
           { authenticated: false, denied: true, status: "denied" },
-          { upsert: true }
+          { upsert: true },
         );
       }
-      return new Response(`
+      return new Response(
+        `
         <html><body style="font-family:Arial;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f3f4f6;">
           <div style="text-align:center;">
             <h2 style="color:#ef4444;">❌ Request Denied</h2>
@@ -86,7 +94,9 @@ export async function GET(req) {
           </div>
           <script>setTimeout(() => window.close(), 1500);</script>
         </body></html>
-      `, { headers: { "Content-Type": "text/html" } });
+      `,
+        { headers: { "Content-Type": "text/html" } },
+      );
     }
 
     // APPROVE
@@ -101,23 +111,40 @@ export async function GET(req) {
           jwtToken,
           status: "authenticated",
         },
-        { upsert: true, new: true }
+        { upsert: true, new: true },
       );
 
       console.log("✅ AuthSession updated for sessionId:", sessionId);
 
       // Small delay helps local dev + slow DB
-      await new Promise(r => setTimeout(r, 400));
+      await new Promise((r) => setTimeout(r, 400));
 
-      return new Response(`
-        <html><body style="font-family:Arial;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f3f4f6;">
-          <div style="text-align:center;">
-            <h2 style="color:#22c55e;">✅ Authentication Successful!</h2>
-            <p>You can close this tab.</p>
+      return new Response(
+        `
+        <html><body 
+        style="background-color: white;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;">
+          <div 
+          style="min-height: 100vh;
+          background-color: white;
+          color: green;
+          font-size: 15px;
+           display: flex;
+           flex-direction: column;
+          justify-content: center;
+          align-items: center;">
+            <h1 
+            style="line-height:2; 
+            font-size: 40px">Authentication Successful</h1>
+            <h2>Redirecting...</h2>
           </div>
           <script>setTimeout(() => window.close(), 1500);</script>
         </body></html>
-      `, { headers: { "Content-Type": "text/html" } });
+      `,
+        { headers: { "Content-Type": "text/html" } },
+      );
     }
 
     // Fallback (no sessionId)
@@ -133,9 +160,10 @@ export async function GET(req) {
     console.log("🍪 access_token cookie set (fallback path)");
 
     return response;
-
   } catch (err) {
     console.error("❌ Magic callback error:", err);
-    return NextResponse.redirect(new URL("/auth/login?error=server-error", req.url));
+    return NextResponse.redirect(
+      new URL("/auth/login?error=server-error", req.url),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getPost, updatePost } from "../services/postApi";
+import { uploadImage } from "../services/uploadApi";
 
 export default function useEditPost(id) {
   const [loading, setLoading] = useState(true);
@@ -22,16 +23,20 @@ export default function useEditPost(id) {
   }, [id]);
 
   const update = async (payload) => {
-    // show global progress until dashboard finishes fetching
     try {
-      if (typeof window !== "undefined")
-        sessionStorage.setItem("jotful-progress", "true");
-    } catch {}
+      setUpdating(true);
 
-    setUpdating(true);
+      let imageUrl = payload.image;
 
-    try {
-      const updated = await updatePost(id, payload);
+      if(payload.image instanceof File){
+        imageUrl = await uploadImage(payload.image)
+      }
+      const updated = await updatePost(id, {
+        title: payload.title,
+        content: payload.content,
+        image: imageUrl
+      })
+
       setPost(updated);
       return updated;
     } finally {

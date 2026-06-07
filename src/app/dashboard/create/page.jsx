@@ -6,38 +6,42 @@ import { useSettings } from "@/contexts/SettingsContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useGuest } from "@/contexts/GuestContext";
 
-import { Button, Spinner, ProgressBar } from "@/components/ui";
+import { Button, Spinner } from "@/components/ui";
 import Image from "next/image";
 import usePostForm from "@/features/posts/hooks/usePostForm";
 import useImageUpload from "@/features/posts/hooks/useImageUpload";
 import useCreatePost from "@/features/posts/hooks/useCreatePost";
+import { useEffect } from "react";
 
-import SkeletonLoader from "@/components/ui/SkeletonLoader";
 
-export default function CreateBlog() {
+export default function CreateJot() {
   const router = useRouter();
-
   const { settings } = useSettings();
   const { addNotification } = useNotifications();
   const { isGuest, addGuestPost } = useGuest();
 
-  const { title, content, setTitle, setContent, clearDraft } = usePostForm(
+  const { title, content, setTitle, setContent, clearDraft, resetForm } = usePostForm(
     settings.autoSave,
   );
 
-  const { 
+  useEffect(() => {
+    resetForm();
+    setSelectedFile(null);
+    setImagePreview(null);  }, [])
+
+  const {
     setSelectedFile,
     selectedFile,
     setImagePreview,
-     imagePreview,
-      selectImage,
-      dragActive,
-       removeImage,
-      handleDrag,
-      handleDrop } =
-    useImageUpload();
+    imagePreview,
+    selectImage,
+    dragActive,
+    removeImage,
+    handleDrag,
+    handleDrop,
+  } = useImageUpload();
 
-  const { loading, submitPost } = useCreatePost({
+  const { creating, submitPost } = useCreatePost({
     settings,
     addNotification,
     addGuestPost,
@@ -56,17 +60,9 @@ export default function CreateBlog() {
     });
   };
 
-  if (loading) {
-    return (
-        <div className="flex justify-center items-center h-screen w-full">
-          <SkeletonLoader />
-        </div>
-    );
-  }
-
   return (
     <div>
-      <section className="flex justify-center items-center">
+      <section className="flex justify-center items-center max-w-2xl mx-auto">
         <form
           onSubmit={handleSubmit}
           className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255, 255, 255, 0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] "
@@ -95,7 +91,7 @@ export default function CreateBlog() {
 
           {!imagePreview && (
             <div
-              className={`w-full h-62 border-2 border-dashed rounded-lg mb-4 flex items-center justify-center cursor-pointer transition-colors ${
+              className={`w-full h-55 border-2 border-dashed rounded-lg mb-4 flex items-center justify-center cursor-pointer transition-colors ${
                 dragActive
                   ? "border-cyan-500 dark:border-cyan-900 bg-cyan-50 dark:bg-black/90"
                   : "border-black dark:border-white bg-cyan-50 dark:bg-black/90"
@@ -156,8 +152,8 @@ export default function CreateBlog() {
             required
           />
 
-          <Button disabled={loading} variant="special" className="w-full">
-               {loading ? (
+          <Button disabled={creating} variant="special" className="w-full">
+            {creating ? (
               <span className="flex items-center justify-center gap-3">
                 Creating... <Spinner size="sm" />
               </span>

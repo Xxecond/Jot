@@ -1,8 +1,6 @@
 import "@/styles/globals.css";
 import Script from "next/script";
 import Providers from "./providers";   // ← Import here
-import { connectDB } from "@/lib/db";
-
 export const metadata = {
   title: "APP-NAME",
   description: "diary app",

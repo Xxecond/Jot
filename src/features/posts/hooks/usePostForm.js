@@ -1,27 +1,35 @@
 "use client";
 
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useDraft from "./useDraft";
 
 export default function usePostForm(autoSave) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { loadDraft, clearDraft } = useDraft(
-    title,
-    content,
-    autoSave
-  );
+  const { loadDraft, clearDraft } = useDraft(title, content, autoSave);
 
+  const initialized = useRef(false);
+
+  // LOAD draft ONLY ONCE
   useEffect(() => {
-    if (!autoSave) return;
+    if (!autoSave || initialized.current) return;
 
     const draft = loadDraft();
 
-    setTitle(draft.title || "");
-    setContent(draft.content || "");
-  }, [autoSave]);
+    if (draft?.title || draft?.content) {
+      setTitle(draft.title || "");
+      setContent(draft.content || "");
+    }
+
+    initialized.current = true;
+  }, [autoSave, loadDraft]);
+
+  const resetForm = () =>{
+    setTitle(""),
+    setContent(""),
+    clearDraft()
+  }
 
   return {
     title,
@@ -29,5 +37,6 @@ export default function usePostForm(autoSave) {
     setTitle,
     setContent,
     clearDraft,
+    resetForm
   };
 }

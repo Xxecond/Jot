@@ -1,29 +1,40 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function useDraft(title, content, autoSave) {
+  const isFirstRun = useRef(true);
+
+  // SAVE draft (debounced)
   useEffect(() => {
-    if (!autoSave || (!title && !content)) return;
+    if (!autoSave) return;
 
     const timer = setTimeout(() => {
+      // don’t save empty initial render
+      if (isFirstRun.current) {
+        isFirstRun.current = false;
+        return;
+      }
+
       localStorage.setItem(
         "draft",
         JSON.stringify({ title, content })
       );
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [title, content, autoSave]);
 
+  // LOAD draft (manual only)
   const loadDraft = () => {
-    const draft = localStorage.getItem("draft");
+    try {
+      const draft = localStorage.getItem("draft");
+      if (!draft) return { title: "", content: "" };
 
-    if (!draft) {
+      return JSON.parse(draft);
+    } catch {
       return { title: "", content: "" };
     }
-
-    return JSON.parse(draft);
   };
 
   const clearDraft = () => {
