@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useFolders } from "@/contexts/FolderContext";
 import { useGuest } from "@/contexts/GuestContext";
 import { useSettings } from "@/contexts/SettingsContext";
+import { useAuth } from "@/context/authContext";
 
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
@@ -21,11 +22,12 @@ export default function Home() {
 
   const { isGuest, guestPosts, hydrated, deleteGuestPost } = useGuest();
   const { settings } = useSettings();
+  const { user } = useAuth();
 
   const { posts, loading, removePost } = usePosts(
     isGuest,
     guestPosts,
-    hydrated,
+    user,
     deleteGuestPost,
   );
 

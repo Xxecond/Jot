@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useNotifications } from "@/contexts/NotificationContext";
-import { useUser } from "@/context/UserContext";
+import { useAuth } from "@/context/authContext";
 import Modal from "@/components/Modal";
 
 function Toggle({ checked, onChange }) {
@@ -61,7 +61,7 @@ const CARD_STYLES = [
 export default function Settings() {
   const { settings, updateSettings, resetSettings } = useSettings();
   const { addNotification } = useNotifications();
-  const { user } = useUser();
+  const { user } = useAuth();
   const [showResetModal, setShowResetModal] = useState(false);
 
   const confirmReset = () => {

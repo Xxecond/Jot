@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPosts, deletePost } from "../services/postApi";
 
-export const usePosts = (isGuest, guestPosts = [], user) => {
+export const usePosts = (isGuest, guestPosts = [], user, deleteGuestPost) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,9 +40,12 @@ export const usePosts = (isGuest, guestPosts = [], user) => {
     }
   }, [guestPosts, isGuest]);
 
-  // REAL DELETE (DB only)
   const removePost = async (id) => {
     try {
+      if (isGuest) {
+        deleteGuestPost?.(id);
+        return;
+      }
       await deletePost(id);
       setPosts((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {

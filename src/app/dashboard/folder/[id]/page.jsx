@@ -11,6 +11,7 @@ import { useFolders } from "@/contexts/FolderContext";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useGuest } from "@/contexts/GuestContext";
 
+import { useAuth } from "@/context/authContext";
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
 
@@ -21,8 +22,9 @@ export default function FolderPage() {
     const { folders, removePostFromFolder } = useFolders();
   const { settings } = useSettings();
   const { isGuest, guestPosts } = useGuest();
+  const { user } = useAuth();
 
-  const { posts, loading, removePost } = usePosts();
+  const { posts, loading, removePost } = usePosts(isGuest, guestPosts, user);
 
   useEffect(() => {
     try {

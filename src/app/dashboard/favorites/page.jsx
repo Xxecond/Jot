@@ -8,6 +8,8 @@ import { Button, ProgressBar } from "@/components/ui";
 
 import { useFolders } from "@/contexts/FolderContext";
 import { useSettings } from "@/contexts/SettingsContext";
+import { useGuest } from "@/contexts/GuestContext";
+import { useAuth } from "@/context/authContext";
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
 
@@ -17,8 +19,10 @@ export default function Favorites() {
 
   const { favorites, removeFavorite } = useFolders();
   const { settings } = useSettings();
+  const { isGuest, guestPosts } = useGuest();
+  const { user } = useAuth();
 
-  const { posts, loading } = usePosts();
+  const { posts, loading } = usePosts(isGuest, guestPosts, user);
 
   // progress handling (same pattern you used everywhere)
   useEffect(() => {

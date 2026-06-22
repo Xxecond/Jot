@@ -17,12 +17,17 @@ export default function LoginPage() {
       <main className="flex rounded-4xl overflow-hidden h-117  w-[87%] max-w-4xl dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] shadow-[0_0_20px_rgba(0,0,0,0.5)]">
       <section  className="relative py-10 space-y-10  mx-auto w-1/2  bg-white dark:bg-black text-black dark:text-white hidden md:block">
                   <Button variant="secondary" className="absolute left-4  dark:text-white top-5 z-20 w-5 md:w-12 hidden md:block"><Link href="/"><BackwardIcon /></Link></Button>
-                <h2 className="pt-3 text-3xl font-bold text-center ">APP-NAME✍️</h2>
-                <p className="text-sm xl:text-base dark:text-gray-300 text-gray-800 text-center leading-relaxed w-4/5 mx-auto">
+                <h2 className="pt-3 text-3xl font-bold text-center ">JotFul✍️</h2>
+                <p className="text-sm xl:text-base dark:text-gray-300
+                 text-gray-800 text-center leading-relaxed w-4/5 mx-auto">
               Sign in to view, write and manage your posts while keeping your thoughts flowing.
                 </p>
-               <div className="absolute translate-x-1/2 right-1/2 h-40 w-70 border border-black">
-                
+               <div className="absolute translate-x-1/2 right-1/2 h-48 w-70">
+                  <Image 
+                  src="/assets/bok.png"
+                  alt="book"
+                  fill
+                  className="object-fill"/>
                 </div>
               </section>
         <section className="relative md:w-1/2 w-full  bg-white dark:bg-black/90  dark:text-white p-10 ">

@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import Script from "next/script";
 import Providers from "./providers";   // ← Import here
 export const metadata = {
-  title: "APP-NAME",
+  title: "JotFul",
   description: "diary app",
   icon: "/favicon.ico"
 };

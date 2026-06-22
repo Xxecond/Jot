@@ -65,7 +65,7 @@ export default function CreateJot() {
       <section className="flex justify-center items-center max-w-2xl mx-auto">
         <form
           onSubmit={handleSubmit}
-          className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255, 255, 255, 0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] "
+          className="bg-gray-200 dark:text-white text-black dark:bg-gray-500/10 dark:shadow-[0_0_20px_rgba(255, 255, 255, 0.1)] shadow-[0_0_20px_rgba(0,0,0,0.7)] rounded-lg p-8 w-[90%] lg:my-10"
         >
           <input
             value={title}
