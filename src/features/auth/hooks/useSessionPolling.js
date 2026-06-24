@@ -22,26 +22,10 @@ export default function useSessionPolling({
 
         if (data.authenticated) {
           clearInterval(interval);
-          
           if (data.token) {
-            // ✅ Store token in localStorage for axios interceptor
-            localStorage.setItem("token", data.token);
-            console.log("✅ Token stored in localStorage");
+            document.cookie = `access_token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
           }
-
-          // ✅ Log completion
-          console.log("✅ Session authenticated successfully");
-          
-          // Refresh router to pick up the new auth_token cookie set by check-session
-          router.refresh();
-
-          // Call success callback
           onSuccess?.();
-
-          // Small delay to ensure cookie and token are propagated through axios
-          setTimeout(() => {
-            router.push(redirectTo);
-          }, 300);
         }
 
         if (data.denied) {

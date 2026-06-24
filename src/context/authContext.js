@@ -21,11 +21,8 @@ export function AuthProvider({ children }) {
       setError(null);
       const userData = await getMe();
       setUser(userData);
-      console.log("✅ User authenticated:", userData.email);
     } catch (err) {
-      // 401 is expected when no token exists - this is NOT an error
-      if (err.response?.status === 401) {
-        console.log("ℹ️ No active session - user not logged in");
+      if (err.response?.status === 401 || err.response?.status === 404) {
         setUser(null);
       } else {
         console.error("❌ Auth check failed:", err.message);

@@ -81,7 +81,7 @@ export async function POST(req) {
       { expiresIn: "7d" }
     );
 
-    const response = NextResponse.redirect(new URL("/home", req.url));
+    const response = NextResponse.redirect(new URL("/dashboard/home", req.url));
     response.cookies.set("access_token", jwtToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

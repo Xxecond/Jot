@@ -34,12 +34,9 @@ export const getMe = async () => {
     const { data } = await api.get("/api/auth/me");
     return data;
   } catch (err) {
-    if (err.response?.status === 401) {
-      // Expected when no token - re-throw to let caller handle
-      console.log("ℹ️ No active session");
+    if (err.response?.status === 401 || err.response?.status === 404) {
       throw err;
     }
-    // Other errors should be logged
     console.error("❌ Failed to get user:", err.message);
     throw err;
   }

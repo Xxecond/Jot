@@ -77,7 +77,7 @@ export async function GET(req) {
       { expiresIn: "7d" }
     );
 
-    const response = NextResponse.redirect(new URL("/home", baseUrl));
+    const response = NextResponse.redirect(new URL("/dashboard/home", baseUrl));
     response.cookies.set("access_token", jwtToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

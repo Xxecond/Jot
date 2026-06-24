@@ -30,7 +30,7 @@ export default function FoldersPage() {
           <div className="flex flex-col items-center justify-center mt-40 gap-4">
             <p className="text-gray-500 dark:text-gray-400 text-lg">No folders yet</p>
             <Button variant="special">
-              <Link href="/home">Go to Home</Link>
+              <Link href="/dashboard/home">Go to Home</Link>
             </Button>
           </div>
         )}
@@ -38,3 +38,5 @@ export default function FoldersPage() {
     </div>
   )
 }
+
+

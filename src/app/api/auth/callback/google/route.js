@@ -72,23 +72,21 @@ export async function GET(req) {
       await user.save();
     }
 
-    // Create JWT
     const jwtToken = jwt.sign(
       { userId: user._id, email: user.email },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    const response = NextResponse.redirect(new URL("/home", baseUrl));
-    response.cookies.set("access_token", jwtToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60,
-      path: "/"
-    });
-
-    return response;
+    return new Response(
+      `<html><head></head><body>
+        <script>
+          document.cookie = "access_token=${jwtToken}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax";
+          window.location.href = "/dashboard/home";
+        </script>
+      </body></html>`,
+      { headers: { "Content-Type": "text/html" } }
+    );
   } catch (err) {
     console.error("OAuth error:", err);
     return NextResponse.redirect(new URL("/auth/login?error=server-error", baseUrl));

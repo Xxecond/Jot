@@ -37,10 +37,10 @@ export async function GET(req) {
 
       // ✅ Set HttpOnly cookie with proper security settings
       response.cookies.set("access_token", session.jwtToken, {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 7 * 24 * 60 * 60, // 7 days
+        maxAge: 7 * 24 * 60 * 60,
         path: "/",
       });
 

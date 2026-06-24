@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import useSessionPolling from "@/features/auth/hooks/useSessionPolling"; // ← Use the fixed hook
+import useSessionPolling from "@/features/auth/hooks/useSessionPolling";
+import { useAuth } from "@/context/authContext";
 
 export default function WaitingAuth() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { refreshUser } = useAuth();
   const [sessionId, setSessionId] = useState(null);
-  const [status, setStatus] = useState("waiting"); // waiting | authenticated | denied
+  const [status, setStatus] = useState("waiting");
 
   // Get sessionId from URL
   useEffect(() => {
@@ -22,14 +24,10 @@ export default function WaitingAuth() {
     }
   }, [searchParams, router]);
 
-  // Success handler
-  const handleSuccess = () => {
+  const handleSuccess = async (userData) => {
     setStatus("authenticated");
-    // Force refresh so middleware + AuthContext see the new cookie
-    router.refresh();
-    setTimeout(() => {
-      router.push("/dashboard/home");
-    }, 500);
+    setUser(userData);
+    router.push("/dashboard/home");
   };
 
   const handleDenied = () => {

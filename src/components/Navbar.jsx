@@ -341,11 +341,11 @@ export default function Navbar({ first, second }) {
                   >
                     {item.text}
                   </button>
-                ) : item.href === "/home" ? (
+                ) : item.href === "/dashboard/home" ? (
                   <button
                     onClick={() => {
                       setActiveFolder(null);
-                      router.push("/home");
+                      router.push("/dashboard/home");
                     }}
                     className="tracking-tight text-white hover:font-semibold xl:text-lg"
                   >
