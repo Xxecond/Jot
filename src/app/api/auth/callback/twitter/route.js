@@ -63,7 +63,6 @@ export async function GET(req) {
     if (!user) {
       user = await User.create({
         email: `${twitterUser.username}@twitter.local`, // Fallback email
-        name: twitterUser.name,
         isVerified: true,
         provider: "twitter",
         providerId: twitterUser.id,

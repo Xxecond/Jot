@@ -114,15 +114,18 @@ export default function BlogCard({ blog, onDelete, hideAction, change, notificat
   };
 
   const renderContent = (text) => {
-    return text.split(/\s+/).map((word, i) => {
-      if (word.startsWith('#')) {
-        return (
-          <span key={i} className="text-cyan-300 dark:text-cyan-400 font-semibold">{word} </span>
-        );
-      }
-      return word + ' ';
-    });
-  };
+    return text.split("\n").map((line, lineIndex) => (
+      <div key={lineIndex}>
+        {line.split(" ").map((word, i)=>
+         word.startsWith('#')? (
+        <span key={i} className="text-cyan-300 dark:text-cyan-400 font-semibold">{word}{" "} </span>
+        ):
+          ( word + ' '
+    )
+    )}
+    </div >
+    ));
+  }
 
   const  handleDelete = () => {
   if (onDelete) return onDelete(blog._id);
@@ -164,7 +167,7 @@ const variants ={
 
       {/* Image */}
       {blog.image && settings.showImages && (
-        <div className="relative w-full aspect-[4/4] md:aspect-[4/2] overflow-hidden ">
+        <div className="relative w-full aspect-[4/4] md:aspect-[4/3] overflow-hidden ">
           <Image
             src={blog.image}
             alt={blog.title || "Blog image"}

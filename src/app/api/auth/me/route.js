@@ -30,7 +30,6 @@ export async function GET(req) {
     return NextResponse.json({
       id: user._id,
       email: user.email,
-      name: user.name,
       isVerified: user.isVerified,
       provider: user.provider,
     });

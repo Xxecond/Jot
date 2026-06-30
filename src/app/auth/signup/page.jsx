@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { SignupForm } from "@/features/auth/components";
 import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui";
 import { BackwardIcon } from "@heroicons/react/24/solid";
@@ -69,13 +68,6 @@ export default function SignupPage() {
                 <FaXTwitter className="ml-3 text-lg" />
               </button>
             </a>
-            {/* Uncomment when Apple OAuth is configured
-  <li className="w-[27.43px] h-[27.43px] bg-[#313030] rounded-full text-gray-300 justify-center items-center flex">
-    <a href="/api/auth/apple">
-      <FaApple />
-    </a>
-  </li>
-  */}
           </div>
         </section>
       </main>

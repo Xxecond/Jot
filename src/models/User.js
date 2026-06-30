@@ -10,11 +10,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
-    name: {
-      type: String,
-      default: null,
-    },
-
     isVerified: {
       type: Boolean,
       default: false,
@@ -22,7 +17,7 @@ const userSchema = new mongoose.Schema(
 
     provider: {
       type: String,
-      enum: ["google", "twitter", "apple", "magic"],
+      enum: ["google", "twitter", "magic"],
       default: "magic",
     },
 

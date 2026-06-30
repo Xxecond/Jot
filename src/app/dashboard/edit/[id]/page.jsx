@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useGuest } from "@/contexts/GuestContext";
@@ -14,6 +14,7 @@ import useEditPost from "@/features/posts/hooks/useEditPost";
 import SkeletonLoader from "@/components/ui/SkeletonLoader";
 
 export default function EditJot() {
+  const [imageRemoved, setImageRemoved]=  useState(false);
   const { id } = useParams();
   const router = useRouter();
 
@@ -58,7 +59,7 @@ export default function EditJot() {
       await update({
         title,
         content,
-        image: selectedFile || post?.image || null,
+        image: imageRemoved ? null : selectedFile || post?.image ,
       });
 
       router.push("/dashboard/home");
@@ -100,6 +101,7 @@ export default function EditJot() {
                 const file = e.target.files[0];
                 setSelectedFile(file);
                 setImagePreview(URL.createObjectURL(file));
+                setImageRemoved(false);
               }}
             />
           </label>
@@ -151,6 +153,7 @@ export default function EditJot() {
                 onClick={() => {
                   setImagePreview(null);
                   setSelectedFile(null);
+                  setImageRemoved(true);
                 }}
               >
                 Remove Image

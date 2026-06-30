@@ -59,7 +59,6 @@ export async function GET(req) {
     if (!user) {
       user = await User.create({
         email: googleUser.email,
-        name: googleUser.name,
         isVerified: true,
         provider: "google",
         providerId: googleUser.id,

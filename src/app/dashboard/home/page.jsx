@@ -89,7 +89,7 @@ export default function Home() {
         ) : (
           <div className="flex justify-center mt-40">
             <Button variant="special">
-              <Link href="/dashboard/create">CREATE NEW JOT</Link>
+              <Link href="/dashboard/create">CREATE JOT</Link>
             </Button>
           </div>
         )}
