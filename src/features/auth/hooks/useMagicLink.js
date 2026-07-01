@@ -84,7 +84,7 @@ export default function useMagicLink(
         intervalRef.current = null;
       }
     };
-  }, [pollingSessionId, redirectTo, router]);
+  }, [pollingSessionId, redirectTo]);
 
   return {
     email,

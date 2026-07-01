@@ -4,4 +4,4 @@ Chat  you see with the navigation(both mobile and desktop ), I want you to add a
 
 Chat in try app, I can enter edit page, user remove button to remove previous image and when I click update, the image doesn’t render in home, but when I log in and try to do the same , the image still appears 
 
-Chat I realized with the google auth , after being redirected to the dashboard, the it is refreshes immediately and all your data comes to view(profile is  also  sett  immediately    ), it’s not the same for x auth and magic link. Fix this issue with care else you might miss the main problem. 
+C`hat I realized with the google auth , after being redirected to the dashboard, the it is refreshes immediately and all your data comes to view(profile is  also  sett  immediately    ), it’s not the same for x auth and magic link. Fix this issue with care else you might miss the main problem. `
