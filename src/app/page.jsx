@@ -55,34 +55,37 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
-          <div className="w-1/2 relative md:block hidden mx-1">
-              <Image 
+          <div className="w-1/2 relative md:block hidden ">
+          <Image 
             src="/assets/bok.png"
-            fill 
             alt="book"
-            className="object-fill"/>
+            fill 
+            priority
+            className="object-contain"/>
           </div>
         </main>
       </section>
-      <footer className=" h-50  bg-cyan-700 dark:bg-cyan-950 dark:text-gray-100 text-gray-200">
+      <footer className="relative  h-50 md:h-60  bg-cyan-700 dark:bg-cyan-950 dark:text-gray-100 text-gray-200">
         <section className="flex pt-5 py-9 gap-8 ">
-          <div className="relative  h-20 md:h-30  w-30 ml-6 ">
+          <div className="relative  ml-6 ">
             <Image 
             src="/assets/bok.png"
             alt="book"
-            fill 
-            className="object-fill"/>
+            width={120}
+            height={120}
+            className="object-contain"/>
           </div>
-          <p className="flex md:items-center items-end mr-3">
-            JotFul is a simple space designed to jot thoughts, capture moments
+          <p className="flex md:items-center items-end mr-3  h-20">
+            Jot is a simple space designed to jot thoughts, capture moments
             what matters through notes not photos.
           </p>
-        </section>
-        <div className="border-t bg-cyan-700 dark:bg-cyan-950 border-t-white flex items-center justify-end  border-b-0">
+           <div className=" absolute w-full  bottom-0 border-t bg-cyan-600 dark:bg-cyan-950 border-t-white flex items-center justify-end  border-b-0">
           <span className=" py-4 text-sm font-light pr-5 pt-3">
-            ©{new Date().getFullYear()} JotFul. All rights reserved.
+            ©{new Date().getFullYear()} Jot. All rights reserved.
           </span>
         </div>
+        </section>
+       
       </footer>
     </div>
   );

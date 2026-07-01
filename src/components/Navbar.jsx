@@ -303,6 +303,18 @@ export default function Navbar({ first, second }) {
                 )}
               </li>
 
+              <li className="bg-black/70 dark:bg-white/70 rounded-md p-2 transition-all duration-300 hover:pl-5">
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSdYZuKYYeKiqliInoUSSLxud04UwuyJQj3swIgy1TgsZYsErQ/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className={`text-xl w-full hover:text-cyan-500 dark:hover:text-cyan-700 ${textColor} block`}
+                >
+                  Review
+                </a>
+              </li>
+
               {!isGuest && (
                 <button
                   onClick={() => setModal(true)}
@@ -433,6 +445,12 @@ export default function Navbar({ first, second }) {
               ) : (
                 <Link href="/dashboard/settings">Settings</Link>
               )}
+            </li>
+
+            <li className="tracking-tight text-white hover:font-semibold xl:text-lg">
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYZuKYYeKiqliInoUSSLxud04UwuyJQj3swIgy1TgsZYsErQ/viewform" target="_blank" rel="noopener noreferrer">
+                Review
+              </a>
             </li>
 
             {!isGuest && (

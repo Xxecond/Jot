@@ -73,6 +73,7 @@ export default function useEditPost(id) {
         title: payload.title,
         content: payload.content,
         image: imageUrl,
+        removeImage: payload.image === null,
       });
 
       setPost(updated);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import useCountdown from "../hooks/useCountdown";
 import { sendMagicLink } from "@/features/auth/services/authService";
 import { checkSession } from "@/features/auth/services/authService";
@@ -9,8 +8,6 @@ import generateId from "@/lib/generateId";
 
 export default function useMagicLink(
   action = "login", redirectTo = "/dashboard/home") {
-    
-  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -64,11 +61,9 @@ export default function useMagicLink(
           clearInterval(intervalRef.current);
           intervalRef.current = null;
           if (data.token) {
-            try { localStorage.setItem("token", data.token); } catch (e) {}
+            document.cookie = `access_token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
           }
-          // redirect to dashboard
-          router.refresh();
-          router.push(redirectTo);
+          window.location.href = redirectTo;
           setPollingSessionId(null);
         }
 

@@ -4,15 +4,13 @@ import { usePathname } from "next/navigation";
 import {Navbar} from "@/components";
 import Profile from "@/components/Profile";
 import { useFolders } from "@/contexts/FolderContext";
-import { useSettings } from "@/contexts/SettingsContext";
 
 export default function Header() {
   const pathname = usePathname();
   const { folders } = useFolders();
-  const { settings } = useSettings();
 
   const headings = {
-    "/dashboard/home": "JotFul",
+    "/dashboard/home": "Jot",
     "/dashboard/create": "New Jot",
     "/dashboard/settings": "Settings",
     "/dashboard/favorites": "Favorites",
@@ -31,18 +29,8 @@ export default function Header() {
 
   const pageName = getPageName(pathname);
 
-  const getHeaderBg = () => {
-    switch (settings.cardStyle) {
-      case 'slate':    return 'bg-slate-600 dark:bg-slate-800';
-      case 'rose':     return 'bg-rose-500 dark:bg-rose-800';
-      case 'emerald':  return 'bg-emerald-600 dark:bg-emerald-900';
-      case 'midnight': return 'bg-indigo-900 dark:bg-gray-950';
-      default:         return 'bg-cyan-600 dark:bg-cyan-950';
-    }
-  };
-
   return (
-    <header className={`fixed top-0 w-full ${getHeaderBg()} text-white dark:text-cyan-50 py-3 xl:py-4 z-50  overflow-hidden`}>
+    <header className="fixed top-0 w-full bg-cyan-600 dark:bg-cyan-950 text-white dark:text-cyan-50 py-3 xl:py-4 z-50  overflow-hidden">
       {/* Mobile Layout */}
       <div className="md:hidden absolute top-0 -left-4">
         <Navbar first="icon" />
