@@ -9,6 +9,7 @@ import { useAuth } from "@/context/authContext";
 import { useRouter } from "next/navigation";
 import { useFolders } from "@/contexts/FolderContext";
 import { useGuest } from "@/contexts/GuestContext";
+import { useSettings } from "@/contexts/SettingsContext";
 
 function Spin({ open, setOpen, className }) {
   return (
@@ -43,7 +44,28 @@ export default function Navbar({ first, second }) {
   const { logout, user } = useAuth();
   const { folders, addFolder, deleteFolder, setActiveFolder } = useFolders();
   const { isGuest, exitGuestMode } = useGuest();
+  const { settings } = useSettings();
   const [guestPrompt, setGuestPrompt] = useState(false);
+
+  const getNavBg = () => {
+    switch (settings.cardStyle) {
+      case 'slate':    return 'bg-slate-700 dark:bg-slate-900';
+      case 'rose':     return 'bg-rose-600 dark:bg-rose-900';
+      case 'emerald':  return 'bg-emerald-700 dark:bg-emerald-950';
+      case 'midnight': return 'bg-indigo-950 dark:bg-black';
+      default:         return 'bg-cyan-700 dark:bg-cyan-950';
+    }
+  };
+
+  const getDropdownBg = () => {
+    switch (settings.cardStyle) {
+      case 'slate':    return 'bg-slate-700 dark:bg-slate-900';
+      case 'rose':     return 'bg-rose-600 dark:bg-rose-900';
+      case 'emerald':  return 'bg-emerald-700 dark:bg-emerald-950';
+      case 'midnight': return 'bg-indigo-950 dark:bg-black';
+      default:         return 'bg-cyan-700 dark:bg-cyan-950';
+    }
+  };
   const router = useRouter();
   const dropdownRef = useRef(null);
 
@@ -173,7 +195,7 @@ export default function Navbar({ first, second }) {
         )}
 
         <div
-          className={`fixed left-0 top-0 h-full w-64 bg-cyan-700 dark:bg-cyan-950 shadow-xl shadow-white/10 transform transition-transform duration-800 pb-safe ${open ? "translate-x-0" : "-translate-x-full"}`}
+          className={`fixed left-0 top-0 h-full w-64 ${getNavBg()} shadow-xl shadow-white/10 transform transition-transform duration-800 pb-safe ${open ? "translate-x-0" : "-translate-x-full"}`}
           onClick={(e) => e.stopPropagation()}
         >
           <nav className="h-full flex flex-col">
@@ -369,7 +391,7 @@ export default function Navbar({ first, second }) {
                 Folders
               </button>
               {folderDropdownOpen && (
-                <ul className="absolute top-full left-0 mt-1 w-44 bg-cyan-700 dark:bg-cyan-950 rounded-lg shadow-lg z-50 overflow-hidden">
+                <ul className={`absolute top-full left-0 mt-1 w-44 ${getDropdownBg()} rounded-lg shadow-lg z-50 overflow-hidden`}>
                   <li>
                     <button
                       onClick={() => {

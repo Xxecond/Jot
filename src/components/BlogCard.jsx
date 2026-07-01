@@ -321,7 +321,13 @@ const variants ={
       {folderPicker && (
         <div className="fixed inset-0 z-[100] bg-black/60" onClick={() => setFolderPicker(false)}>
           <div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[68%] max-w-sm rounded-xl bg-cyan-700 z-[110] overflow-hidden"
+            className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[68%] max-w-sm rounded-xl z-[110] overflow-hidden ${
+              settings.cardStyle === 'slate' ? 'bg-slate-700' :
+              settings.cardStyle === 'rose' ? 'bg-rose-600' :
+              settings.cardStyle === 'emerald' ? 'bg-emerald-700' :
+              settings.cardStyle === 'midnight' ? 'bg-indigo-950' :
+              'bg-cyan-700'
+            }`}
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white text-center pt-4 pb-2 font-medium">Add to Folder</p>
