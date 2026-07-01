@@ -55,7 +55,7 @@ node src/lib/migrations/addMagicTokenFields.js
 
 # Option 3: Using npm script (add to package.json if needed)
 npm run migrate:add-magic-token
-```
+````
 
 ### Verify the Fix
 

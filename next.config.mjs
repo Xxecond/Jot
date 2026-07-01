@@ -1,11 +1,13 @@
-/** @type {import('next').NextConfig} */
+  /** @type {import('next').NextConfig} */
 const nextConfig = {
-  allowedDevOrigins: ['172.20.10.7'],
+  turbopack: {
+    root: process.cwd()  },
+  allowedDevOrigins: ["172.20.10.7"],
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },
