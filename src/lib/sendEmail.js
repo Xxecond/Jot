@@ -30,7 +30,7 @@ export async function sendMagicLinkEmail(toEmail, magicLink, sessionId = null) {
   
   const message = `
    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <h2>Someone is trying to log in to jotFul</h2>
+  <h2>Someone is trying to log in to Jot</h2>
   <p>Was this you?</p>
   
   <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width:100%; max-width:400px; margin:30px auto;">
@@ -75,9 +75,9 @@ export async function sendMagicLinkEmail(toEmail, magicLink, sessionId = null) {
   const t = getTransporter();
 
   await t.sendMail({
-    from: `"jotFul" <${process.env.EMAIL_USER}>`,
+    from: `"Jot" <${process.env.EMAIL_USER}>`,
     to: toEmail,
-    subject: "jotFul Login Verification",
+    subject: "Jot Login Verification",
     html: message,
   });
 }
