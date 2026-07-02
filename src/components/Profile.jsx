@@ -16,7 +16,7 @@ export default function Profile({ isMobile = false }) {
 
   return (
     <Link 
-      href="/settings" 
+      href="/dashboard/settings" 
       className={`flex items-center gap-2 hover:opacity-80 transition-opacity ${
         isMobile ? "justify-end" : ""
       }`}

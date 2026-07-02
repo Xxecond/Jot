@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 const TWITTER_CLIENT_ID = process.env.TWITTER_CLIENT_ID;
 const TWITTER_CLIENT_SECRET = process.env.TWITTER_CLIENT_SECRET;
@@ -9,7 +10,7 @@ const TWITTER_REDIRECT_URI = process.env.TWITTER_REDIRECT_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(req) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const baseUrl = 'http://localhost:3000';
   
   try {
     const { searchParams } = new URL(req.url);
@@ -24,23 +25,34 @@ export async function GET(req) {
       return NextResponse.redirect(new URL("/auth/login?error=oauth-failed", baseUrl));
     }
 
+    // Retrieve the code_verifier stored in the cookie during the auth initiation
+    const cookieStore = await cookies();
+    const codeVerifier = cookieStore.get("twitter_code_verifier")?.value;
+
+    if (!codeVerifier) {
+      return NextResponse.redirect(new URL("/auth/login?error=oauth-failed", baseUrl));
+    }
+
     // Exchange code for access token
+    const credentials = Buffer.from(`${TWITTER_CLIENT_ID}:${TWITTER_CLIENT_SECRET}`).toString('base64');
     const tokenResponse = await fetch("https://api.twitter.com/2/oauth2/token", {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": `Basic ${Buffer.from(`${TWITTER_CLIENT_ID}:${TWITTER_CLIENT_SECRET}`).toString('base64')}`
+        "Authorization": `Basic ${credentials}`,
       },
       body: new URLSearchParams({
         code,
         grant_type: "authorization_code",
+        client_id: TWITTER_CLIENT_ID,
         redirect_uri: TWITTER_REDIRECT_URI,
-        code_verifier: 'challenge'
+        code_verifier: codeVerifier,
       }),
     });
 
     const tokens = await tokenResponse.json();
     if (!tokens.access_token) {
+      console.error("Twitter token exchange failed:", tokens);
       return NextResponse.redirect(new URL("/auth/login?error=oauth-failed", baseUrl));
     }
 
