@@ -380,8 +380,15 @@ export default function Navbar({ first, second }) {
               >
                 Folders
               </button>
-              {folderDropdownOpen && (
-                <ul className="absolute top-full left-0 mt-1 w-44 bg-cyan-700 dark:bg-cyan-950 rounded-lg shadow-lg z-50 overflow-hidden">
+              {folderDropdownOpen && typeof document !== "undefined" && createPortal(
+                <ul
+                  style={{
+                    position: "fixed",
+                    top: dropdownRef.current?.getBoundingClientRect().bottom + 4,
+                    left: dropdownRef.current?.getBoundingClientRect().left,
+                  }}
+                  className="w-44 bg-cyan-700 dark:bg-cyan-950 rounded-lg shadow-lg z-[9999] overflow-hidden"
+                >
                   <li>
                     <button
                       onClick={() => {
@@ -413,7 +420,8 @@ export default function Navbar({ first, second }) {
                       </button>
                     </li>
                   ))}
-                </ul>
+                </ul>,
+                document.body
               )}
             </li>
 
