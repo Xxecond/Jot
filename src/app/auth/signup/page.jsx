@@ -24,8 +24,8 @@ export default function SignupPage() {
             </Link>
           </Button>
           <h2 className="pt-3 text-3xl font-bold text-center ">
-            Join JotFul✍️
-          </h2>
+            Join Jot✍️
+          </h2>s
           <p className="text-sm dark:text-gray-300 text-gray-800 text-center leading-relaxed w-4/5 mx-auto">
             Create your account, share your stories, and inspire your readers —
             all in one place.

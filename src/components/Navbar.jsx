@@ -46,6 +46,7 @@ export default function Navbar({ first, second }) {
   const [guestPrompt, setGuestPrompt] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef(null);
+  const dropdownListRef = useRef(null);
 
   const navLinks = [
     { id: 1, href: "/dashboard/home", text: "Home" },
@@ -96,7 +97,10 @@ export default function Navbar({ first, second }) {
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (
+        dropdownRef.current && !dropdownRef.current.contains(e.target) &&
+        dropdownListRef.current && !dropdownListRef.current.contains(e.target)
+      ) {
         setFolderDropdownOpen(false);
       }
     };
@@ -382,6 +386,7 @@ export default function Navbar({ first, second }) {
               </button>
               {folderDropdownOpen && typeof document !== "undefined" && createPortal(
                 <ul
+                  ref={dropdownListRef}
                   style={{
                     position: "fixed",
                     top: dropdownRef.current?.getBoundingClientRect().bottom + 4,

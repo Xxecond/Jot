@@ -36,7 +36,7 @@ export default function LandingPage() {
       </nav>
       <section className=" flex h-dvh justify-center items-center text-center dark:text-white text-black bg-white dark:bg-black/90">
         <main className="flex w-full h-150 pb-35">
-          <div className="w-full md:w-1/2 flex flex-col justify-center">
+          <div className="w-full md:w-1/2 flex flex-col justify-center overflow-hidden">
             <h1 className="text-[40px] sm:text-5xl font-light leading-loose text-nowrap">
               Capture ideas✨,
               <br />
@@ -51,7 +51,7 @@ export default function LandingPage() {
                 <Button variant="outline">Log In</Button>
               </Link>
               <Link href="/auth/signup">
-                <Button variant="outline">Create Account</Button>
+               <Button variant="outline">Create Account</Button>
               </Link>
             </div>
           </div>
@@ -65,9 +65,9 @@ export default function LandingPage() {
           </div>
         </main>
       </section>
-      <footer className="relative  h-50 md:h-60  bg-cyan-700 dark:bg-cyan-950 dark:text-gray-100 text-gray-200">
-        <section className="flex pt-5 py-9 gap-8 ">
-          <div className="relative  ml-6 ">
+      <footer className="relative overflow-hidden  h-50 md:h-60  bg-cyan-700 dark:bg-cyan-950 dark:text-gray-100 text-gray-200">
+        <section className="flex py-8 gap-8 ">
+          <div className="relative ml-6 ">
             <Image 
             src="/assets/bok.png"
             alt="book"
@@ -75,9 +75,8 @@ export default function LandingPage() {
             height={120}
             className="object-contain"/>
           </div>
-          <p className="flex md:items-center items-end mr-3  h-20">
-            Jot is a simple space designed to jot thoughts, capture moments
-            what matters through notes not photos.
+          <p className="flex md:items-center items-end mr-3  h-18">
+            Jot is a simple space designed to turn passing thoughts into lasting memories with notes and photos. 
           </p>
            <div className=" absolute w-full  bottom-0 border-t bg-cyan-600 dark:bg-cyan-950 border-t-white flex items-center justify-end  border-b-0">
           <span className=" py-4 text-sm font-light pr-5 pt-3">

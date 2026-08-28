@@ -30,7 +30,7 @@ export default function Header() {
   const pageName = getPageName(pathname);
 
   return (
-    <header className="fixed top-0 w-full bg-cyan-600 dark:bg-cyan-950 text-white dark:text-cyan-50 py-3 xl:py-4 z-50  overflow-hidden">
+    <header className="fixed top-0 w-full bg-cyan-600 dark:bg-cyan-950 text-white dark:text-cyan-50 py-3 xl:py-4 z-50">
       {/* Mobile Layout */}
       <div className="md:hidden absolute top-0 -left-4">
         <Navbar first="icon" />

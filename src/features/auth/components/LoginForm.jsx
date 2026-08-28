@@ -31,7 +31,7 @@ export default function LoginForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="w-full p-3  focus:outline-none ring ring-black dark:ring-white focus:ring-2 rounded-full dark:bg-white/10 bg-black/10"
-        placeholder="mumuniyussif9@gmail.com"
+        placeholder="andrewsampadu9@gmail.com"
         required
       />
 

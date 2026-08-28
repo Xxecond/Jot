@@ -1,7 +1,7 @@
 So chat I want you to reverse the sync color I ordered you to do
-Initially card styles applied only to cards and I made you add the header and add jot/ create jot button to sync with it, reverse it.
+Inihat I realized with the google auth , after being redirected to the dashboard, the it is refreshes immediately and all your data comes to view(profile is  also  sett  immediately    ), it’s not the same for x auth and magic link. Fix this issue with care else you might miss the main problem. tially card styles applied only to cards and I made you add the header and add jot/ create jot button to sync with it, reverse it.
 Chat  you see with the navigation(both mobile and desktop ), I want you to add a review tab right in between settings and sign in . So when a user clicks it , it opens a new tab, just do it I’ll insert the link later,
 
 Chat in try app, I can enter edit page, user remove button to remove previous image and when I click update, the image doesn’t render in home, but when I log in and try to do the same , the image still appears 
 
-C`hat I realized with the google auth , after being redirected to the dashboard, the it is refreshes immediately and all your data comes to view(profile is  also  sett  immediately    ), it’s not the same for x auth and magic link. Fix this issue with care else you might miss the main problem. `
+C``

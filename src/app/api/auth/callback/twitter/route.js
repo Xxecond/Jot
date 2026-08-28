@@ -10,7 +10,7 @@ const TWITTER_REDIRECT_URI = process.env.TWITTER_REDIRECT_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(req) {
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl =process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   
   try {
     const { searchParams } = new URL(req.url);

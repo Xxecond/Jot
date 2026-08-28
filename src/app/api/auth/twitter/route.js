@@ -26,7 +26,7 @@ export async function GET() {
     code_challenge_method: 'plain'
   });
 
-  const authUrl = `https://twitter.com/i/oauth2/authorize?${params}`;
+  const authUrl = `https://x.com/i/oauth2/authorize?${params}`;
   const response = NextResponse.redirect(authUrl);
 
   response.cookies.set("twitter_code_verifier", codeVerifier, {

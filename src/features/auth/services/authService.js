@@ -48,14 +48,11 @@ export const getMe = async () => {
 export const clearAuthStorage = () => {
   if (typeof window === "undefined") return;
 
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-
-  sessionStorage.removeItem("token");
-  sessionStorage.removeItem("user");
+  localStorage.removeItem("jotful-folders");
+  localStorage.removeItem("jotful-favorites");
+  localStorage.removeItem("jotful-progress");
 
   sessionStorage.removeItem("jotful-guest");
-
   sessionStorage.removeItem("jotful-guest-posts");
 };
 
