@@ -59,26 +59,27 @@ export default function LandingPage() {
           <Image 
             src="/assets/bok.png"
             alt="book"
-            fill 
+            fill
+            sizes="(max-width: 768px) 1px, 50vw" 
             priority
-            className="object-contain"/>
+            className=" object-contain w"/>
           </div>
         </main>
       </section>
-      <footer className="relative overflow-hidden  h-50 md:h-60  bg-cyan-700 dark:bg-cyan-950 dark:text-gray-100 text-gray-200">
-        <section className="flex py-8 gap-8 ">
-          <div className="relative ml-6 ">
+      <footer className="">
+        <section className=" flex flex-col text-white bg-cyan-600 dark:bg-cyan-700 min-h-[30vh] items-center">
+          <div className="w-full h-full p-5 flex items-center gap-5">
             <Image 
             src="/assets/bok.png"
             alt="book"
             width={120}
             height={120}
-            className="object-contain"/>
-          </div>
-          <p className="flex md:items-center items-end mr-3  h-18">
+            className="object-contain w-auto h-auto"/>
+          <p className="flex items-center">
             Jot is a simple space designed to turn passing thoughts into lasting memories with notes and photos. 
           </p>
-           <div className=" absolute w-full  bottom-0 border-t bg-cyan-600 dark:bg-cyan-950 border-t-white flex items-center justify-end  border-b-0">
+          </div>
+           <div className=" w-full border-t bg-cyan-600 dark:bg-cyan-950 border-t-white flex items-center justify-end  border-b-0">
           <span className=" py-4 text-sm font-light pr-5 pt-3">
             ©{new Date().getFullYear()} Jot. All rights reserved.
           </span>

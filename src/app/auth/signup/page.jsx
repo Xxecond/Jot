@@ -14,7 +14,7 @@ export default function SignupPage() {
        relative bg-cyan-600 dark:bg-cyan-950"
     >
       <main className="flex rounded-4xl overflow-hidden h-117 w-[87%] max-w-4xl dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-        <section className="relative py-10 space-y-10  mx-auto w-1/2 dark:bg-black bg-white dark:text-white text-black hidden md:block">
+        <section className="relative  items-center justify-between  py-12 pb-15 flex-col w-1/2  bg-white dark:bg-black text-black dark:text-white hidden md:flex">
           <Button
             variant="secondary"
             className="absolute left-4  dark:text-white top-5 z-20 w-5 md:w-12 hidden md:block"
@@ -23,23 +23,27 @@ export default function SignupPage() {
               <BackwardIcon />
             </Link>
           </Button>
-          <h2 className="pt-3 text-3xl font-bold text-center ">
-            Join Jot✍️
-          </h2>s
-          <p className="text-sm dark:text-gray-300 text-gray-800 text-center leading-relaxed w-4/5 mx-auto">
-            Create your account, share your stories, and inspire your readers —
-            all in one place.
-          </p>
-          <div className="absolute translate-x-1/2 right-1/2 h-48 w-70 ">
+          <div className="w-5/6 flex flex-col justify-between  items-center max-[883px]:h-[40%] min-h-[35%] xl:h-[37%] ">
+            <h2 className=" text-3xl font-bold text-center ">Join Jot✍️</h2>
+            <p
+              className="text-sm xl:text-base dark:text-gray-300
+            text-gray-800 text-center leading-relaxed w-5/6 "
+            >
+              Create your account, share your stories, and inspire your readers
+              — all in one place.
+            </p>
+          </div>
+          <div className="flex justify-center h-[45%]">
             <Image
               src="/assets/bok.png"
               alt="book"
-              fill
-              className="object-fill"
+              height={100}
+              width={100}
+              loading="eager"
+              className="object-contain h-auto w-auto"
             />
           </div>
         </section>
-
         <section className="relative md:w-1/2 w-full bg-white dark:bg-black/90 text-gray-900 dark:text-white p-10 ">
           <Button
             variant="secondary"
