@@ -6,10 +6,10 @@ import Link from "next/link";
 import { BlogCard, SearchBar } from "@/components";
 import { Button, ProgressBar } from "@/components/ui";
 
-import { useFolders } from "@/contexts/FolderContext";
+import { useFav } from "@/contexts/FavoritesContext";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useGuest } from "@/contexts/GuestContext";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/contexts/authContext";
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
 
@@ -17,7 +17,7 @@ export default function Favorites() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showRemoteProgress, setShowRemoteProgress] = useState(false);
 
-  const { favorites, removeFavorite } = useFolders();
+  const { favorites, removeFavorite } = useFav();
   const { settings } = useSettings();
   const { isGuest, guestPosts } = useGuest();
   const { user } = useAuth();
@@ -72,15 +72,14 @@ export default function Favorites() {
               actionLabel="Remove"
               variant="warning"
               onDelete={() => {
-                removeFavorite(blog._id)
+                removeFavorite(blog._id);
               }}
             />
           ))
         ) : (
           <div className="text-center mt-35">
             <p className="pb-3">No favorites yet</p>
-            <Button
-            variant="special">
+            <Button variant="special">
               <Link href="/dashboard/home">Go Home</Link>
             </Button>
           </div>

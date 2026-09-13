@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useFolders } from "@/contexts/FolderContext";
 import { useGuest } from "@/contexts/GuestContext";
 import { useSettings } from "@/contexts/SettingsContext";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/contexts/authContext";
 
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";

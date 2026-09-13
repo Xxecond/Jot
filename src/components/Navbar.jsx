@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import Modal from "./Modal";
 import FolderModal from "./FolderModal";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/contexts/authContext";
 import { useRouter } from "next/navigation";
 import { useFolders } from "@/contexts/FolderContext";
 import { useGuest } from "@/contexts/GuestContext";

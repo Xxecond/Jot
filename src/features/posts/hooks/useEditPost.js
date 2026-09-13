@@ -12,6 +12,7 @@ export default function useEditPost(id) {
   useEffect(() => {
     async function fetchPost() {
       try {
+        setLoading(true)
         // Handle guest posts
         if (id?.startsWith("guest-")) {
           const guestPosts =
@@ -26,8 +27,7 @@ export default function useEditPost(id) {
           setLoading(false);
           return;
         }
-
-        // Handle database posts
+      // Handle database posts
         const data = await getPost(id);
         setPost(data);
       } catch (err) {

@@ -11,9 +11,10 @@ export const sendMagicLink = async (email, sessionId = null, action = "signup") 
     sessionId,
     action,
   });
-
+console.log(data);
   return data;
 } catch (err){
+  console.log("error", err);
   if (err.name === "ZodError") {
     throw new Error(err.issues[0].message);
   }

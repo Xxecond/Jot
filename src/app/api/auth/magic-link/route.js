@@ -5,10 +5,12 @@ import crypto from "crypto";
 import { sendMagicLinkEmail } from "@/lib/sendEmail";
 import { NextResponse } from "next/server";
 
+
 export async function POST(req) {
   try {
     await connectDB();
     const { email, sessionId, action } = await req.json(); // action: 'signup' or 'login'
+    console.log("hey", email);
 
     if (!email || !email.includes("@")) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
@@ -38,7 +40,7 @@ export async function POST(req) {
             message: "Verification email resent! Check your email.",
             });
         }
-        return NextResponse.json({ error: "Email already registered. Please login instead." }, { status: 409 });
+        return NextResponse.json({ error: "Email registered. Please login." }, { status: 409 });
       }
         
       // Create new user

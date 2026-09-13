@@ -11,8 +11,8 @@ import { BackwardIcon } from "@heroicons/react/24/solid";
 export default function LoginPage() {
   return (
     <div className="flex h-dvh items-center justify-center relative bg-cyan-600 dark:bg-cyan-950">
-      <main className="flex rounded-4xl overflow-hidden h-117  w-[87%] max-w-4xl dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-        <section className="relative  items-center justify-between  py-11 pb-15 flex-col w-1/2  bg-white dark:bg-black text-black dark:text-white hidden md:flex">
+      <main className="flex rounded-4xl overflow-hidden h-115  w-[90%] max-w-4xl dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] shadow-[0_0_20px_rgba(0,0,0,0.5)] max-[350px]:h-106">
+        <section className="relative  items-center justify-between  py-12 pb-15 flex-col w-1/2  bg-white dark:bg-black text-black dark:text-white hidden md:flex">
           <Button
             variant="secondary"
             className="absolute left-4  dark:text-white top-5 z-20 w-5 md:w-12 hidden md:block"
@@ -21,11 +21,13 @@ export default function LoginPage() {
               <BackwardIcon />
             </Link>
           </Button>
-          <div className="w-5/6 flex flex-col justify-between items-center max-[883px]:h-[40%] min-h-[35%] xl:h-[37%] ">
-            <h2 className=" text-3xl font-bold text-center ">Jot✍️</h2>
+          <div className="w-5/6 flex flex-col justify-between items-center h-[34%] xl:h-[35%]  ">
+            <h1 className="font-semibold text-lg md:text-xl max-[350px]:text-sm">
+              Jot✍️
+            </h1>
             <p
               className="text-sm xl:text-base dark:text-gray-300
-                 text-gray-800 text-center leading-relaxed w-5/6 "
+                 text-gray-800 text-center leading-relaxed w-full "
             >
               Sign in to view, write and manage your posts while keeping your
               thoughts flowing.
@@ -42,20 +44,20 @@ export default function LoginPage() {
             />
           </div>
         </section>
-        <section className="relative md:w-1/2 w-full  bg-white dark:bg-black/90  dark:text-white p-10 ">
+        <section className="relative md:w-1/2 w-full bg-white dark:bg-black/90  dark:text-white py-10 px-8 max-[350px]:px-5 ">
           <Button
             variant="secondary"
-            className="absolute left-4  dark:text-white top-5 z-20 w-5 md:w-12 md:hidden"
+            className="absolute left-6 max-[350px]:left-4  dark:text-white top-5 z-20 w-5 md:w-12 md:hidden"
           >
             <Link href="/">
               <BackwardIcon />
             </Link>
           </Button>
-          <h1 className="md:text-3xl text-2xl font-semibold text-center  mt-3">
+          <h1 className="font-semibold text-lg md:text-xl max-[350px]:text-sm text-center  mt-3">
             Welcome Back
           </h1>
           <LoginForm />
-          <div className="pt-12 flex flex-col justify-center text-sm space-y-4 text-white md:text-white">
+          <div className="pt-7 flex flex-col justify-center text-sm space-y-4 max-[350px]:space-y-3 text-white md:text-white">
             <a href="/api/auth/google">
               <button className="w-full cursor-pointer h-9 bg-cyan-600 dark:bg-cyan-950 dark:hover:bg-cyan-900 hover:bg-cyan-500 text-white dark:text-slate-100 rounded-xl text-sm md:text-base xl:text-lg justify-center items-center flex">
                 <FcGoogle className="mr-3 text-lg" />

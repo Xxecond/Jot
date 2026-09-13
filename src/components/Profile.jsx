@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/contexts/authContext";
 import { useGuest } from "@/contexts/GuestContext";
 
 export default function Profile({ isMobile = false }) {

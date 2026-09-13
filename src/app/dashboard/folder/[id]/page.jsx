@@ -11,7 +11,7 @@ import { useFolders } from "@/contexts/FolderContext";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useGuest } from "@/contexts/GuestContext";
 
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/contexts/authContext";
 import { usePosts } from "@/features/posts/hooks/usePosts";
 import usePostFilter from "@/features/posts/hooks/usePostFilter";
 

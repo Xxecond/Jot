@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useNotifications } from "@/contexts/NotificationContext";
-import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/contexts/authContext";
 import Modal from "@/components/Modal";
 
 function Toggle({ checked, onChange }) {

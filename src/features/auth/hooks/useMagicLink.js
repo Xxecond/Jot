@@ -31,11 +31,10 @@ export default function useMagicLink(
     }
 
     setLoading(true);
-
     try {
       const newSessionId = generateId();
-
-     await sendMagicLink(email, newSessionId, action);
+     const done = await sendMagicLink(email, newSessionId, action);
+     console.log("doneSend", done);
       // Show immediate instruction and start background polling on this page
       setMessage("Email sent! Check your email.");
       startCountdown();
