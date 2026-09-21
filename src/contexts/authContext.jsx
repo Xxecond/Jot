@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
         isLoggedIn: !!user,
       }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

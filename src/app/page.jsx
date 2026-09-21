@@ -68,7 +68,7 @@ export default function LandingPage() {
         </main>
       </section>
       <footer className="">
-        <section className=" flex flex-col text-white bg-cyan-600 dark:bg-cyan-700 min-h-[30vh] items-center">
+        <section className=" flex flex-col text-white bg-cyan-600 dark:bg-cyan-950 min-h-[30vh] items-center">
           <div className="w-full h-full p-5 flex items-center gap-5">
             <Image
               src="/assets/bok.png"

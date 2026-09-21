@@ -37,7 +37,7 @@ export async function POST(req) {
           await sendMagicLinkEmail(email, magicLink, sessionId);
         
           return NextResponse.json({ 
-            message: "Verification email resent! Check your email.",
+            message: "Verification email resent! Check your inbox.",
             });
         }
         return NextResponse.json({ error: "Email registered. Please login." }, { status: 409 });

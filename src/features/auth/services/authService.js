@@ -3,7 +3,7 @@ import { authSchema } from "@/lib/validations/authSchema";
 /**
  * Send magic link for login/signup
  */
-export const sendMagicLink = async (email, sessionId = null, action = "signup") => {
+export const requestMagicLink = async (email, sessionId = null, action = "signup") => {
   try{
   authSchema.parse({ email });
   const { data } = await api.post("/api/auth/magic-link", {
@@ -49,7 +49,6 @@ export const getMe = async () => {
 export const clearAuthStorage = () => {
   if (typeof window === "undefined") return;
 
-  localStorage.removeItem("jotful-folders");
   localStorage.removeItem("jotful-favorites");
   localStorage.removeItem("jotful-progress");
 

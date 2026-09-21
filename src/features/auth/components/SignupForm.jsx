@@ -25,7 +25,7 @@ export default function SignupForm() {
 
   return (
     <form
-      className="flex flex-col gap-4 mt-9 max-[350px]:gap-3 max-[350px]:mt-7 "
+      className="flex flex-col gap-4 mt-9 max-[350px]:gap-3 max-[350px]:mt-7"
       onSubmit={handleSubmit}
     >
       <label className="text-sm md:text-base">Email</label>

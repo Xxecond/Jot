@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import useCountdown from "../hooks/useCountdown";
-import { sendMagicLink } from "@/features/auth/services/authService";
+import useCountdown from "./useCountdown";
+import { requestMagicLink } from "@/features/auth/services/authService";
 import { checkSession } from "@/features/auth/services/authService";
 import generateId from "@/lib/generateId";
 
@@ -33,10 +33,10 @@ export default function useMagicLink(
     setLoading(true);
     try {
       const newSessionId = generateId();
-     const done = await sendMagicLink(email, newSessionId, action);
+     const done = await requestMagicLink(email, newSessionId, action);
      console.log("doneSend", done);
       // Show immediate instruction and start background polling on this page
-      setMessage("Email sent! Check your email.");
+      setMessage("Email sent! Check your inbox.");
       startCountdown();
       setPollingSessionId(newSessionId);
     } catch (err) {
@@ -75,7 +75,7 @@ export default function useMagicLink(
       } catch (err) {
         // ignore errors and continue polling
       }
-    }, 2500);
+    }, 3500);
 
     return () => {
       if (intervalRef.current) {

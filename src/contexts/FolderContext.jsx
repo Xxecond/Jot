@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
-
+import { useAuth } from "./authContext";
 const FolderContext = createContext();
 
 export const useFolders = () => {
@@ -12,20 +12,53 @@ export const useFolders = () => {
 };
 
 export const FolderProvider = ({ children }) => {
+  const {user} = useAuth();
   const [folders, setFolders] = useState([]);
   const [activeFolder, setActiveFolder] = useState(null);
 
+  const storageKey = user ? `jotful-folders-${user.id}` : null;
+
   useEffect(() => {
-    const savedFolders = localStorage.getItem("jotful-folders");
-    if (savedFolders) setFolders(JSON.parse(savedFolders));
-  }, []);
+    if (!user) {
+      setFolders([]);
+      setActiveFolder(null);
+      return;
+    }
+
+    const savedFolders = localStorage.getItem(storageKey);
+
+    if (savedFolders) {
+      try {
+        setFolders(JSON.parse(savedFolders));
+      } catch (err) {
+        console.error("Failed to parse saved folders:", err);
+
+        setFolders([]);
+      }
+    } else {
+      setFolders([]);
+    }
+
+    setActiveFolder(null);
+  }, [user, storageKey]);
+
+  const saveFolders = (updatedFolders) => {
+    setFolders(updatedFolders);
+
+    if (storageKey) {
+      localStorage.setItem(
+        storageKey,
+
+        JSON.stringify(updatedFolders),
+      );
+    }
+  };
 
   const addFolder = (name) => {
     if (folders.length >= 5) return null;
     const folder = { id: Date.now().toString(), name, postIds: [] };
     const updated = [...folders, folder];
-    setFolders(updated);
-    localStorage.setItem("jotful-folders", JSON.stringify(updated));
+    saveFolders(updated);
     return folder;
   };
 
@@ -33,8 +66,7 @@ export const FolderProvider = ({ children }) => {
     if (folders.length >= 5) return null;
     const folder = { id: Date.now().toString(), name, postIds: [postId] };
     const updated = [...folders, folder];
-    setFolders(updated);
-    localStorage.setItem("jotful-folders", JSON.stringify(updated));
+    saveFolders(updated);
     return folder;
   };
 
@@ -44,8 +76,7 @@ export const FolderProvider = ({ children }) => {
         ? { ...f, postIds: [...f.postIds, postId] }
         : f,
     );
-    setFolders(updated);
-    localStorage.setItem("jotful-folders", JSON.stringify(updated));
+    saveFolders(updated);
   };
 
   const removePostFromFolder = (folderId, postId) => {
@@ -54,14 +85,12 @@ export const FolderProvider = ({ children }) => {
         ? { ...f, postIds: f.postIds.filter((id) => id !== postId) }
         : f,
     );
-    setFolders(updated);
-    localStorage.setItem("jotful-folders", JSON.stringify(updated));
+    saveFolders(updated);
   };
 
   const deleteFolder = (folderId) => {
     const updated = folders.filter((f) => f.id !== folderId);
-    setFolders(updated);
-    localStorage.setItem("jotful-folders", JSON.stringify(updated));
+    saveFolders(updated);
   };
 
   return (
